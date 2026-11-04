@@ -1,0 +1,13 @@
+import { cp, mkdir, rm } from 'node:fs/promises';
+import { fileURLToPath } from 'node:url';
+import path from 'node:path';
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const out = path.join(root, 'dist');
+await rm(out, { recursive: true, force: true });
+await mkdir(out, { recursive: true });
+await cp(path.join(root, 'src/index.html'), path.join(out, 'index.html'));
+await cp(path.join(root, 'src/css'), path.join(out, 'css'), { recursive: true });
+await cp(path.join(root, 'src/js'), path.join(out, 'js'), { recursive: true });
+await cp(path.join(root, 'public/images'), path.join(out, 'images'), { recursive: true });
+await cp(path.join(root, 'public/data'), path.join(out, 'data'), { recursive: true });
+console.log('Static portfolio built in dist/.');
