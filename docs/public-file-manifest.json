@@ -1,7 +1,7 @@
 {
   "reviewed": "2026-11-05",
   "scope": "website source, generated dist, public aggregate data, chart images, Power BI screenshots and documentation",
-  "file_count": 58,
+  "file_count": 59,
   "errors": [],
   "files": [
     {
@@ -21,8 +21,8 @@
     },
     {
       "path": "CHANGELOG.md",
-      "sha256": "fad0146682e56985f637db1b2d1efdb7c7f81b8a78664f47afbc78fbbb37c91b",
-      "bytes": 371
+      "sha256": "76e622070f4714d48ed3a6f9dd76e3eecf6e4608d82ca6ca748ec4f908cc2f5c",
+      "bytes": 620
     },
     {
       "path": "dist/css/site.css",
@@ -106,8 +106,8 @@
     },
     {
       "path": "dist/index.html",
-      "sha256": "d08c84173dcd8d5c50e533a26d5aadd6c7b46ded5d5b10932536019f743a6267",
-      "bytes": 28104
+      "sha256": "00a19993707e3cd3567c9fc65e66a3326984b9c765f6d1f144e722d9ebbdc5f4",
+      "bytes": 28800
     },
     {
       "path": "dist/js/app.js",
@@ -116,8 +116,8 @@
     },
     {
       "path": "docs/accessibility-and-qa.md",
-      "sha256": "a616416a8e9bfe9ed35af6f6680abb7c92144e30a148bdd2e1cd4fe3ccb8859c",
-      "bytes": 675
+      "sha256": "29a82cf8914d97fe725deba877ea8a5cac8bf07f0a17a983f3bcdb29ddd27fd7",
+      "bytes": 990
     },
     {
       "path": "docs/architecture.md",
@@ -126,23 +126,28 @@
     },
     {
       "path": "docs/data-provenance.md",
-      "sha256": "27a9070a2e6ff79bd643f182e680d31469142543962997086584de3cbf08e4e5",
-      "bytes": 552
+      "sha256": "a6d863e8de0ec52690df276cfde3919ccd88d9acf1d3dcfb7ceb5f0c12e658c3",
+      "bytes": 702
     },
     {
       "path": "docs/getting-started.md",
-      "sha256": "3a0839e9c6b08a812b29ffbaef68177549a8707865dd77ce572f3a64645d7c96",
-      "bytes": 581
+      "sha256": "fe96bcf778ac2e15e46031f755ef194d2cd9ce6e7e38f425a98dddb1b2dcd4df",
+      "bytes": 570
     },
     {
       "path": "docs/knowledge-processing.md",
-      "sha256": "0829e950440da86796912e57f603ecc70e31d06d3a744ee316113cd3c0ce74e5",
-      "bytes": 996
+      "sha256": "3240a6aac4ee9981cd213fea20a46ea169d9fd2443e5235ea3260d06f895109f",
+      "bytes": 967
+    },
+    {
+      "path": "docs/linkedin-copy.md",
+      "sha256": "fa60f0cdc97e4f6a4f1b3c71cd7a21057f10914830a1bac7fadd3c001d2180be",
+      "bytes": 3544
     },
     {
       "path": "docs/research-pipeline.md",
-      "sha256": "ba325f26dc172c7de0c1ef25b0f45a75b5ebda7e55122be8e35ca174756ee963",
-      "bytes": 629
+      "sha256": "21ed8af11a7d2e319375ec880111f8a1fb807ea1c29d4b6234570d5f2d3139c5",
+      "bytes": 745
     },
     {
       "path": "docs/screenshots/desktop-1920x1080.png",
@@ -166,8 +171,8 @@
     },
     {
       "path": "docs/security-review.md",
-      "sha256": "98b8fe92898486c850efa5e972fa93f34ee50ac991945261782a1eea9355eda4",
-      "bytes": 1443
+      "sha256": "d0030e12b931cff4468d63414823dd6820d5477f7307ddb8b5f37e0f22416474",
+      "bytes": 2048
     },
     {
       "path": "docs/technical-stack.md",
@@ -256,13 +261,13 @@
     },
     {
       "path": "README.md",
-      "sha256": "1b28aca0cd189e43ac84f0fc533b0766d345d9c3f8bdf576ba92191228a11ac8",
-      "bytes": 2538
+      "sha256": "988fd4ddf499a212b199edcfb363d1f04ec96e3ab9dc34fb54b37fc7986bd522",
+      "bytes": 3404
     },
     {
       "path": "RIGHTS.md",
-      "sha256": "cebac34f958bb3169325c583c4af659a2b8c113991fae541ed2578be1a2743e0",
-      "bytes": 552
+      "sha256": "ea0e4c535fd24e2cd079d01bfc5d95c40b2b1ddd716ebba523187321de0ee3d2",
+      "bytes": 508
     },
     {
       "path": "scripts/audit_public_site.py",
@@ -286,8 +291,8 @@
     },
     {
       "path": "src/index.html",
-      "sha256": "d08c84173dcd8d5c50e533a26d5aadd6c7b46ded5d5b10932536019f743a6267",
-      "bytes": 28104
+      "sha256": "00a19993707e3cd3567c9fc65e66a3326984b9c765f6d1f144e722d9ebbdc5f4",
+      "bytes": 28800
     },
     {
       "path": "src/js/app.js",

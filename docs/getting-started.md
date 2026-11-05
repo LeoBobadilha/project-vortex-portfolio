@@ -1,12 +1,12 @@
 # Getting started
 
-Requirements: Node.js 18+ and Python 3.10+ for the local preview server.
+Requirements: Node.js 18+ and Python 3.10+ for the local static preview.
 
 ```powershell
-npm run build
+node scripts/build.mjs
 npm run preview
 ```
 
-Open http://127.0.0.1:4174. The source in `src/` and approved assets in `public/` generate `dist/`. No framework or runtime package install is required.
+Open `http://127.0.0.1:4174`. The build copies the source from `src/` and approved assets from `public/` into `dist/`. No framework or runtime dependency installation is required.
 
-The companion local repository is `project-vortex-bi-showcase`; its PBIP is aggregate-only. It has not been published. The local release commits use a non-routable `.invalid` author address to avoid exposing personal email; set an approved GitHub no-reply identity before publication.
+The live portfolio is [hosted on GitHub Pages](https://leobobadilha.github.io/project-vortex-portfolio/). The companion [BI repository](https://github.com/LeoBobadilha/project-vortex-bi-showcase) contains the aggregate-only 14-page PBIP.
