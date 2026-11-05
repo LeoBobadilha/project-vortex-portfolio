@@ -62,6 +62,14 @@ else:
                 errors.append(f"Broken CSS asset in {css.name}: {raw}")
     if "report-gallery.png" in html:
         errors.append("Withheld Power BI contact sheet is still referenced by the page")
+    gallery_count = html.count('class="pbi-thumb"')
+    if gallery_count != 6:
+        errors.append(f"Expected six verified Power BI gallery captures, found {gallery_count}")
+    if "Pages 04–11 remain part of the PBIP but are not shown here" not in html:
+        errors.append("Gallery does not disclose that pages 04-11 are withheld pending genuine recaptures")
+    for page in ("04-Performance", "05-Risk", "06-Trade-Explorer", "07-Validation", "08-W02-Win", "09-W03-Win", "10-W04-Win", "11-W05-Win"):
+        if page in html:
+            errors.append(f"Missing/withheld Power BI screenshot is referenced: {page}")
     if "Past performance, including historical backtests and simulated trading results" not in html:
         errors.append("Historical-performance disclosure is missing")
 

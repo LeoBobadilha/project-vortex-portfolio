@@ -2,7 +2,6 @@
 
 The static interface uses keyboard-visible focus, semantic headings, alt text, reduced-motion support and high-contrast color tokens. Body text uses `#F0F6FC`, labels `#DCE6F0`, secondary copy `#C7D6E4`, surfaces `#102236`, positive `#58E39A` and negative `#FF7F83`.
 
-Previous Chromium QA used these capture sizes: desktop 1920x1080, laptop 1366x768, tablet 768x1024 and mobile 390x844. Browser tests verified portfolio/year/basis behavior, that full-history PF and DD remain fixed across year/basis filters, six/two gallery filters, case dialog operation, no overflowing document width, and loaded visual assets (the empty dialog image before opening is expected).
+Edge headless QA used the repository-subpath build at desktop 1920x1080, laptop 1366x768, tablet 768x1024 and mobile 390x844. Tests verified PSC and P6 selection, year and gross/net filters, the case-study loss filter, Power BI lightbox navigation, all six gallery image decodes, replay entry/seek/play/pause/restart/exit behavior, result gating until exit, and zero document-width overflow at tablet and mobile sizes. The run reported no console errors and no failed requests.
 
-
-The current release-content edits passed the static build, public-asset audit and smoke test. The Power BI screenshot gallery is intentionally withheld pending eight real captures. No fresh browser-console check or new desktop/mobile screenshots were produced in this documentation update.
+The repository's `docs/screenshots/` folder contains the four standard viewport captures. This release-candidate browser run also produced separate desktop, laptop, tablet, mobile, gallery and replay screenshots in the local `Research_Evidence/Website_QA/` folder; those QA artifacts are not distributed with the public site. The eight unavailable PBIP captures remain withheld pending genuine Power BI Desktop recapture; the 14-page report itself is unchanged.

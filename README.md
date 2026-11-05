@@ -15,11 +15,13 @@ The monthly cumulative chart is a running sum of monthly aggregates, not account
 
 ## Power BI showcase
 
-The companion [Project Vortex BI showcase](https://github.com/LeoBobadilha/project-vortex-bi-showcase) contains the public-safe 14-page PBIP. This website currently displays the clean Executive Overview preview only. The complete screenshot gallery is withheld while eight pages await genuine Power BI Desktop recaptures; do not interpret the single preview as the full report. The PBIP structure is unchanged.
+The companion [Project Vortex BI showcase](https://github.com/LeoBobadilha/project-vortex-bi-showcase) contains the public-safe 14-page PBIP. The website gallery currently shows six verified clean Desktop captures: pages 01-03 and 12-14. Pages 04-11 remain part of the PBIP but are withheld until genuine clean recaptures are available. The gallery does not represent the full report.
+
+The case-study area also contains an interactive replay of a selected two-contract WIN short from the frozen PSC historical backtest. Its 2,930-point move reconciles to R$1,172 gross, R$12 C30 costs and R$1,160 net C30. Price levels are shifted and times are relative; the case is not representative of all trades. See [replay methodology](docs/trade-replay-methodology.md).
 
 ## Data and local preview
 
-Three approved aggregate CSV files are distributed under `public/data/`; the browser currently fetches `monthly_portfolio_results.csv` and `benchmark_summary.csv`. ``annual_portfolio_results.csv` is distributed as the third aggregate file but is not fetched by current JavaScript. No row-level trade ledger or raw market series is embedded.
+Three approved aggregate CSV files are distributed under `public/data/`; the browser currently fetches `monthly_portfolio_results.csv` and `benchmark_summary.csv`. `annual_portfolio_results.csv` is distributed as the third aggregate file but is not fetched by current JavaScript. The replay adds only 21 shifted M5 candles and separately loaded completed-trade summary values; the broader market archive and trade ledger are not included.
 
 Requirements: Node.js 18+ and Python 3.10+.
 
@@ -29,6 +31,14 @@ npm run preview
 ```
 
 Open `http://127.0.0.1:4174`. The build copies `src/` and approved assets from `public/` into `dist/`.
+
+Run the replay and public-site checks with:
+
+```powershell
+python scripts/test_trade_replay.py
+python scripts/audit_public_site.py
+python scripts/test_static_site.py
+```
 
 ## Release and risk
 

@@ -17,6 +17,7 @@
   <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
   <link rel="stylesheet" href="css/site.css">
   <script src="js/app.js" defer></script>
+  <script src="js/trade-replay.js" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -33,6 +34,7 @@
       <a href="#pipeline">Research pipeline</a>
       <a href="#performance">Performance</a>
       <a href="#cases">Case studies</a>
+      <a href="#trade-replay">Trade replay</a>
       <a href="#engineering">Engineering</a>
       <a href="#power-bi">Power BI</a>
       <a class="nav-cta" href="#status">Research status <span aria-hidden="true">↗</span></a>
@@ -178,6 +180,46 @@
           <div><p class="eyebrow"><span>04</span> Trade case studies</p><h2>Real trades, reviewed<br><span class="accent">in market context.</span></h2></div>
           <div><p class="section-lede">The gallery presents six verified winners and two completed losses from the frozen case set. Charts retain recorded candle geometry and higher-timeframe context where available; sensitive timestamps, price scales, strategy identifiers and individual results are redacted.</p><p class="case-warning">These examples illustrate case review. They are not representative of the full trade distribution and do not establish profitability.</p></div>
         </div>
+        <section class="trade-replay" id="trade-replay" aria-labelledby="trade-replay-title">
+          <div class="replay-heading">
+            <div><p class="eyebrow">Featured historical study</p><h3 id="trade-replay-title">Historical Trade Replay</h3><p class="replay-lede">A verified two-contract WIN short reconstructed from frozen backtest records and matching M5 candles. Step through the recorded price path; the display withholds exact date and clock time.</p></div>
+            <div class="replay-badges" aria-label="Instrument and source"><span>WIN · MINI INDEX</span><span>M5 BARS</span><span>HISTORICAL BACKTEST</span></div>
+          </div>
+          <div class="replay-layout">
+            <div class="replay-main">
+              <div class="replay-chart-wrap">
+                <div class="replay-chart-meta"><span id="replay-chart-state">Loading verified candle sample…</span><span>Price axis shifted · elapsed-time axis</span></div>
+                <div id="trade-replay-chart" class="trade-replay-chart" role="img" aria-label="Progressive M5 candlestick replay. No future candles are displayed."><svg id="trade-replay-svg" viewBox="0 0 900 390" aria-hidden="true"></svg><p class="replay-error" id="replay-error" hidden>The historical replay could not be loaded. The chart is unavailable in this session.</p></div>
+              </div>
+              <div class="replay-controls" role="group" aria-label="Historical replay controls">
+                <div class="replay-button-row">
+                  <button type="button" data-replay-action="play" aria-label="Play replay">Play</button>
+                  <button type="button" data-replay-action="pause" aria-label="Pause replay">Pause</button>
+                  <button type="button" data-replay-action="restart">Restart</button>
+                  <button type="button" data-replay-action="previous" aria-label="Show previous candle">Previous candle</button>
+                  <button type="button" data-replay-action="next" aria-label="Show next candle">Next candle</button>
+                  <button type="button" data-replay-action="entry">Jump to entry</button>
+                  <button type="button" data-replay-action="exit">Jump to exit</button>
+                  <label class="replay-speed">Speed<select id="replay-speed" aria-label="Playback speed"><option value="0.5">0.5×</option><option value="1" selected>1×</option><option value="2">2×</option><option value="4">4×</option></select></label>
+                </div>
+                <label class="replay-timeline-label" for="replay-timeline"><span>Timeline</span><span id="replay-progress-text">Preparing replay</span></label>
+                <input id="replay-timeline" type="range" min="0" max="20" value="0" step="1" aria-label="Select the latest visible candle">
+              </div>
+              <p class="replay-accessible-status" id="replay-live-status" role="status" aria-live="polite">Loading historical candle data.</p>
+            </div>
+            <aside class="replay-side" aria-label="Current replay information">
+              <div class="replay-position-card"><span class="replay-card-label">Position state</span><strong id="replay-position">Loading</strong><p id="replay-mark-label">Only the currently visible candle sequence is used.</p><span class="replay-card-label" id="replay-mark-title">Current gross mark</span><strong id="replay-mark">—</strong></div>
+              <div class="replay-stage-card"><span class="replay-card-label" id="replay-stage-label">Replay stage</span><h4 id="replay-stage-title">Historical context</h4><p id="replay-stage-copy">A short pre-entry context is shown first. The chart does not include later bars until playback reaches them.</p></div>
+              <div class="replay-outcome" id="replay-outcome" hidden>
+                <span class="replay-card-label">Completed trade summary</span><h4>Recorded outcome</h4>
+                <dl><div><dt>Price move</dt><dd id="replay-final-points">—</dd></div><div><dt>Gross P&amp;L · 2 contracts</dt><dd id="replay-final-gross">—</dd></div><div><dt>C30 cost scenario</dt><dd id="replay-final-cost">—</dd></div><div><dt>Net C30 result</dt><dd id="replay-final-net">—</dd></div><div><dt>Recorded MFE / MAE</dt><dd id="replay-final-excursion">—</dd></div></dl>
+              </div>
+            </aside>
+          </div>
+          <p class="replay-method">The displayed price axis uses a constant offset and the horizontal axis uses elapsed minutes from entry. Candle geometry, five-minute spacing and point movements are preserved. No strategy trigger parameters are shown.</p>
+          <p class="replay-disclosure">Selected historical backtest example. This operation is not representative of all trades. Past performance does not guarantee future results.</p>
+          <p class="replay-public-link">Portfolio context and risk definitions: <a href="https://github.com/LeoBobadilha/project-vortex-bi-showcase">Project Vortex Power BI showcase</a>.</p>
+        </section>
         <div class="case-filter" role="group" aria-label="Filter case studies">
           <button class="filter-chip is-active" type="button" data-case-filter="all" aria-pressed="true">All cases <span>08</span></button>
           <button class="filter-chip" type="button" data-case-filter="win" aria-pressed="false">Winners <span>06</span></button>
@@ -233,7 +275,24 @@
         <div class="powerbi-preview">
           <div class="preview-header"><span>POWER BI DESKTOP · EXECUTIVE OVERVIEW</span><span>LOCAL REPORT</span></div>
           <img loading="lazy" src="images/powerbi/executive-overview.png" alt="Genuine Power BI Desktop screenshot of the Project Vortex Executive Overview report page">
-          <p class="preview-caption">Native Power BI Desktop capture. The model uses approved aggregate data and excludes private trade-level records.</p><p class="gallery-unavailable" role="status">The complete 14-page screenshot gallery is withheld while eight pages await genuine Power BI Desktop recaptures. The companion PBIP retains all 14 report pages; this website currently shows only the clean Executive Overview preview.</p>
+            <p class="preview-caption">Native Power BI Desktop capture. The model uses approved aggregate data and excludes private trade-level records.</p><p class="gallery-unavailable" role="status">The complete 14-page image gallery is not yet available: eight pages await genuine Power BI Desktop recaptures. The companion PBIP retains all 14 pages; this website shows the six approved captures available today.</p>
+          <div class="powerbi-gallery" aria-labelledby="pbi-gallery-title">
+            <div class="pbi-gallery-heading"><div><h3 id="pbi-gallery-title">Verified report captures</h3><p>Six of the report’s 14 pages currently have approved, clean screenshots.</p></div><span>ACTUAL POWER BI DESKTOP CAPTURES</span></div>
+            <h4 class="pbi-group-title">Core Analytics &amp; Research</h4>
+            <div class="pbi-thumb-grid">
+              <button class="pbi-thumb" type="button" data-pbi-index="0" data-pbi-title="01 · Knowledge & Intelligence" data-pbi-image="images/powerbi/01-Knowledge.png"><img loading="lazy" src="images/powerbi/01-Knowledge.png" alt="Power BI page 01: Knowledge and Intelligence"><span>01 · Knowledge &amp; Intelligence</span></button>
+              <button class="pbi-thumb" type="button" data-pbi-index="1" data-pbi-title="02 · Autonomous Research Pipeline" data-pbi-image="images/powerbi/02-Research.png"><img loading="lazy" src="images/powerbi/02-Research.png" alt="Power BI page 02: Autonomous Research Pipeline"><span>02 · Autonomous Research Pipeline</span></button>
+              <button class="pbi-thumb" type="button" data-pbi-index="2" data-pbi-title="03 · Executive Overview" data-pbi-image="images/powerbi/03-Executive.png"><img loading="lazy" src="images/powerbi/03-Executive.png" alt="Power BI page 03: Executive Overview"><span>03 · Executive Overview</span></button>
+            </div>
+            <h4 class="pbi-group-title">Historical Trade Case Studies</h4>
+            <div class="pbi-thumb-grid">
+              <button class="pbi-thumb" type="button" data-pbi-index="3" data-pbi-title="12 · W06 Winning Case" data-pbi-image="images/powerbi/12-W06-Win.png"><img loading="lazy" src="images/powerbi/12-W06-Win.png" alt="Power BI page 12: W06 Winning Case"><span>12 · W06 Winning Case</span></button>
+              <button class="pbi-thumb" type="button" data-pbi-index="4" data-pbi-title="13 · L01 Losing Case" data-pbi-image="images/powerbi/13-L01-Loss.png"><img loading="lazy" src="images/powerbi/13-L01-Loss.png" alt="Power BI page 13: L01 Losing Case"><span>13 · L01 Losing Case</span></button>
+              <button class="pbi-thumb" type="button" data-pbi-index="5" data-pbi-title="14 · L02 Losing Case" data-pbi-image="images/powerbi/14-L02-Loss.png"><img loading="lazy" src="images/powerbi/14-L02-Loss.png" alt="Power BI page 14: L02 Losing Case"><span>14 · L02 Losing Case</span></button>
+            </div>
+            <p class="pbi-missing-note">Pages 04–11 remain part of the PBIP but are not shown here until genuine clean captures can be produced.</p>
+          </div>
+          <dialog class="pbi-dialog" id="powerbi-dialog" aria-labelledby="pbi-dialog-title"><div class="pbi-dialog-bar"><h3 id="pbi-dialog-title">Power BI report page</h3><button type="button" data-pbi-close aria-label="Close report preview">Close</button></div><div class="pbi-dialog-image"><img id="pbi-dialog-image" alt=""></div><div class="pbi-dialog-nav"><button type="button" data-pbi-prev aria-label="Previous report screenshot">Previous</button><span id="pbi-dialog-count" aria-live="polite"></span><button type="button" data-pbi-next aria-label="Next report screenshot">Next</button></div></dialog>
         </div>
       </div>
     </section>

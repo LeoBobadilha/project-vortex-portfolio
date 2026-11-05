@@ -1,7 +1,7 @@
 {
   "reviewed": "2026-11-05",
   "scope": "website source, generated dist, public aggregate data, chart images, Power BI screenshots and documentation",
-  "file_count": 59,
+  "file_count": 79,
   "errors": [],
   "files": [
     {
@@ -21,13 +21,13 @@
     },
     {
       "path": "CHANGELOG.md",
-      "sha256": "76e622070f4714d48ed3a6f9dd76e3eecf6e4608d82ca6ca748ec4f908cc2f5c",
-      "bytes": 620
+      "sha256": "d203f45e953519c7a4e08c2a2799b3c6b615e380e7f1a327cd9eabe14fef6174",
+      "bytes": 1085
     },
     {
       "path": "dist/css/site.css",
-      "sha256": "e68daeebff464183ce6319b4b3201886824ac330967844e8083f34911c86b5bf",
-      "bytes": 23956
+      "sha256": "91856508ea371ae56bb642df53f5f79d09552799aa18490f5717708b76b06f65",
+      "bytes": 31172
     },
     {
       "path": "dist/data/annual_portfolio_results.csv",
@@ -43,6 +43,16 @@
       "path": "dist/data/monthly_portfolio_results.csv",
       "sha256": "246c9c50b0dabaf3cfd4883e37ee208c07d169edbccd3de7d5514d44f7715d9c",
       "bytes": 4486
+    },
+    {
+      "path": "dist/data/replay/two-contract-win-outcome.json",
+      "sha256": "bece68e2dce1efd5b8da922e871a02f46e59b12af20ee123cffec87720b0fc9d",
+      "bytes": 416
+    },
+    {
+      "path": "dist/data/replay/two-contract-win.json",
+      "sha256": "dfc6dcb5d9068bff80bca5cdf2e7b6d2d1a0f92b07c006f04edd8b4e3b045d4d",
+      "bytes": 1494
     },
     {
       "path": "dist/images/architecture.png",
@@ -100,24 +110,59 @@
       "bytes": 259
     },
     {
+      "path": "dist/images/powerbi/01-Knowledge.png",
+      "sha256": "9b52d91aa2cd2baa14f0ff502d24a222bece112b7824dc8a5c117fbdf26695e3",
+      "bytes": 262716
+    },
+    {
+      "path": "dist/images/powerbi/02-Research.png",
+      "sha256": "bcdec29794b747feee23f95661b13d0b997dfe4da7e453f52490aaab66ca1e7c",
+      "bytes": 243661
+    },
+    {
+      "path": "dist/images/powerbi/03-Executive.png",
+      "sha256": "ce41fe81874a8e614a016b7e114659a11e7492c8a25ddd24544be2038cbd3e9a",
+      "bytes": 279899
+    },
+    {
+      "path": "dist/images/powerbi/12-W06-Win.png",
+      "sha256": "194303c4a67dfde7cfd6d8a74043f75c81911d4c29bf813cda7039d5df7d858e",
+      "bytes": 233083
+    },
+    {
+      "path": "dist/images/powerbi/13-L01-Loss.png",
+      "sha256": "9b2fdf7d52b4edf2662d6ca1dbec294da760a56da4a05a00057f699d168b0a9c",
+      "bytes": 228923
+    },
+    {
+      "path": "dist/images/powerbi/14-L02-Loss.png",
+      "sha256": "6feef2d2e0c676bd432ecca4e8eb4a0c25cee311e329b699a903f7c92f390fa8",
+      "bytes": 229446
+    },
+    {
       "path": "dist/images/powerbi/executive-overview.png",
       "sha256": "32ac4e90be2f0a8189a6f5969f47fd686782decf5df563045d01af5dc9d27bfa",
       "bytes": 280506
     },
     {
       "path": "dist/index.html",
-      "sha256": "00a19993707e3cd3567c9fc65e66a3326984b9c765f6d1f144e722d9ebbdc5f4",
-      "bytes": 28800
+      "sha256": "52d37efbe8d61be93642d71bc8c6d0f194df0adccdd3a93c197b61b9bf33a93a",
+      "bytes": 37156
     },
     {
       "path": "dist/js/app.js",
-      "sha256": "557da0495de8a758d1e48012b011f23637e40cd41414a7906f46879cda5b994c",
-      "bytes": 8381
+      "sha256": "239931c884b22c2d324cac11b8e63701c3ff3fcfc717b62c1a5bffad5273b91d",
+      "bytes": 9704
+    },
+    {
+      "path": "dist/js/trade-replay.js",
+      "sha256": "b17d0e49121c931f8549670deabdd5638a5d48bfda2cb921d4cb081489018259",
+      "bytes": 10391
     },
     {
       "path": "docs/accessibility-and-qa.md",
-      "sha256": "29a82cf8914d97fe725deba877ea8a5cac8bf07f0a17a983f3bcdb29ddd27fd7",
-      "bytes": 990
+      "sha256": "891baf3d6a253ccc71d384af2539907ccd2872d56b2adcbd16e59b76f8af9e5e",
+      "bytes": 1240
     },
     {
       "path": "docs/architecture.md",
@@ -126,8 +171,8 @@
     },
     {
       "path": "docs/data-provenance.md",
-      "sha256": "a6d863e8de0ec52690df276cfde3919ccd88d9acf1d3dcfb7ceb5f0c12e658c3",
-      "bytes": 702
+      "sha256": "0dbd9f09909d876f38aac5ed10d8a4dbae226ec822c52897de07d7332d7f9a81",
+      "bytes": 1165
     },
     {
       "path": "docs/getting-started.md",
@@ -171,13 +216,18 @@
     },
     {
       "path": "docs/security-review.md",
-      "sha256": "d0030e12b931cff4468d63414823dd6820d5477f7307ddb8b5f37e0f22416474",
-      "bytes": 2048
+      "sha256": "359cd43e9e052ac95ef14e9d3f7192f59d09697d2d6eb11d71ab51a73f5a6d13",
+      "bytes": 2474
     },
     {
       "path": "docs/technical-stack.md",
       "sha256": "418a0f1dc3913cd838dbc6e435c66e519578c593a05f304139c15c1eb0f25e51",
       "bytes": 369
+    },
+    {
+      "path": "docs/trade-replay-methodology.md",
+      "sha256": "7fbb43b38a67d2ff9159a7cd1cf13f08d5f28993e859e41482306f66d92dac33",
+      "bytes": 3536
     },
     {
       "path": "package.json",
@@ -198,6 +248,16 @@
       "path": "public/data/monthly_portfolio_results.csv",
       "sha256": "246c9c50b0dabaf3cfd4883e37ee208c07d169edbccd3de7d5514d44f7715d9c",
       "bytes": 4486
+    },
+    {
+      "path": "public/data/replay/two-contract-win-outcome.json",
+      "sha256": "bece68e2dce1efd5b8da922e871a02f46e59b12af20ee123cffec87720b0fc9d",
+      "bytes": 416
+    },
+    {
+      "path": "public/data/replay/two-contract-win.json",
+      "sha256": "dfc6dcb5d9068bff80bca5cdf2e7b6d2d1a0f92b07c006f04edd8b4e3b045d4d",
+      "bytes": 1494
     },
     {
       "path": "public/images/architecture.png",
@@ -255,14 +315,44 @@
       "bytes": 259
     },
     {
+      "path": "public/images/powerbi/01-Knowledge.png",
+      "sha256": "9b52d91aa2cd2baa14f0ff502d24a222bece112b7824dc8a5c117fbdf26695e3",
+      "bytes": 262716
+    },
+    {
+      "path": "public/images/powerbi/02-Research.png",
+      "sha256": "bcdec29794b747feee23f95661b13d0b997dfe4da7e453f52490aaab66ca1e7c",
+      "bytes": 243661
+    },
+    {
+      "path": "public/images/powerbi/03-Executive.png",
+      "sha256": "ce41fe81874a8e614a016b7e114659a11e7492c8a25ddd24544be2038cbd3e9a",
+      "bytes": 279899
+    },
+    {
+      "path": "public/images/powerbi/12-W06-Win.png",
+      "sha256": "194303c4a67dfde7cfd6d8a74043f75c81911d4c29bf813cda7039d5df7d858e",
+      "bytes": 233083
+    },
+    {
+      "path": "public/images/powerbi/13-L01-Loss.png",
+      "sha256": "9b2fdf7d52b4edf2662d6ca1dbec294da760a56da4a05a00057f699d168b0a9c",
+      "bytes": 228923
+    },
+    {
+      "path": "public/images/powerbi/14-L02-Loss.png",
+      "sha256": "6feef2d2e0c676bd432ecca4e8eb4a0c25cee311e329b699a903f7c92f390fa8",
+      "bytes": 229446
+    },
+    {
       "path": "public/images/powerbi/executive-overview.png",
       "sha256": "32ac4e90be2f0a8189a6f5969f47fd686782decf5df563045d01af5dc9d27bfa",
       "bytes": 280506
     },
     {
       "path": "README.md",
-      "sha256": "988fd4ddf499a212b199edcfb363d1f04ec96e3ab9dc34fb54b37fc7986bd522",
-      "bytes": 3404
+      "sha256": "11826b9fca59c0aa68b375d675b845c16fbae915abf1d2a40a535bdef14fb116",
+      "bytes": 4033
     },
     {
       "path": "RIGHTS.md",
@@ -281,23 +371,33 @@
     },
     {
       "path": "scripts/test_static_site.py",
-      "sha256": "d0f44f2bd1ff013bed5eb91bb56af4bdf40555ec42a7c87d620b2947e7acc50c",
-      "bytes": 3507
+      "sha256": "35ed407c3d56d8f265ba4dfb8d5afcab5e8a42da4bb426770bcb2914a31373dc",
+      "bytes": 4129
+    },
+    {
+      "path": "scripts/test_trade_replay.py",
+      "sha256": "467774fef60221244d95565517af3692f2673a4f3c0d69b851b4e3db4b0e6fe7",
+      "bytes": 4629
     },
     {
       "path": "src/css/site.css",
-      "sha256": "e68daeebff464183ce6319b4b3201886824ac330967844e8083f34911c86b5bf",
-      "bytes": 23956
+      "sha256": "91856508ea371ae56bb642df53f5f79d09552799aa18490f5717708b76b06f65",
+      "bytes": 31172
     },
     {
       "path": "src/index.html",
-      "sha256": "00a19993707e3cd3567c9fc65e66a3326984b9c765f6d1f144e722d9ebbdc5f4",
-      "bytes": 28800
+      "sha256": "52d37efbe8d61be93642d71bc8c6d0f194df0adccdd3a93c197b61b9bf33a93a",
+      "bytes": 37156
     },
     {
       "path": "src/js/app.js",
-      "sha256": "557da0495de8a758d1e48012b011f23637e40cd41414a7906f46879cda5b994c",
-      "bytes": 8381
+      "sha256": "239931c884b22c2d324cac11b8e63701c3ff3fcfc717b62c1a5bffad5273b91d",
+      "bytes": 9704
+    },
+    {
+      "path": "src/js/trade-replay.js",
+      "sha256": "b17d0e49121c931f8549670deabdd5638a5d48bfda2cb921d4cb081489018259",
+      "bytes": 10391
     }
   ]
 }
