@@ -1,5 +1,5 @@
 {
-  "reviewed": "2026-11-04",
+  "reviewed": "2026-11-05",
   "scope": "website source, generated dist, public aggregate data, chart images, Power BI screenshots and documentation",
   "file_count": 58,
   "errors": [],
@@ -8,6 +8,11 @@
       "path": ".gitattributes",
       "sha256": "4016415af7bf29155c24c64681777605a95b6e28ae8ffac368bd4550da57a3ab",
       "bytes": 74
+    },
+    {
+      "path": ".github/workflows/deploy-pages.yml",
+      "sha256": "94a4d28c31c9c512f0bba4e00be0b59336c6607a98b8110215b372d97ca7a46c",
+      "bytes": 1204
     },
     {
       "path": ".gitignore",
@@ -21,8 +26,8 @@
     },
     {
       "path": "dist/css/site.css",
-      "sha256": "880af4cb9761226873a57b2b186b14f0784bd965ad99cc139d1d1b2f2b54d1df",
-      "bytes": 23802
+      "sha256": "e68daeebff464183ce6319b4b3201886824ac330967844e8083f34911c86b5bf",
+      "bytes": 23956
     },
     {
       "path": "dist/data/annual_portfolio_results.csv",
@@ -100,14 +105,9 @@
       "bytes": 280506
     },
     {
-      "path": "dist/images/powerbi/report-gallery.png",
-      "sha256": "c3f28d02c1640f4d08e2a3b1246e9311da014ed5e349040c2997137c013d8ef9",
-      "bytes": 1157058
-    },
-    {
       "path": "dist/index.html",
-      "sha256": "88f1badaadf4ad5aff9807c9e2f95ef180ccc01fda52fd8aebdeaae479d08a46",
-      "bytes": 28384
+      "sha256": "d08c84173dcd8d5c50e533a26d5aadd6c7b46ded5d5b10932536019f743a6267",
+      "bytes": 28104
     },
     {
       "path": "dist/js/app.js",
@@ -166,8 +166,8 @@
     },
     {
       "path": "docs/security-review.md",
-      "sha256": "d4976a96e5bdd266a69480106863f85f9def2d37deeae7a9cb507c8fbcef3035",
-      "bytes": 1298
+      "sha256": "98b8fe92898486c850efa5e972fa93f34ee50ac991945261782a1eea9355eda4",
+      "bytes": 1443
     },
     {
       "path": "docs/technical-stack.md",
@@ -255,14 +255,9 @@
       "bytes": 280506
     },
     {
-      "path": "public/images/powerbi/report-gallery.png",
-      "sha256": "c3f28d02c1640f4d08e2a3b1246e9311da014ed5e349040c2997137c013d8ef9",
-      "bytes": 1157058
-    },
-    {
       "path": "README.md",
-      "sha256": "08c83be80085f48cb1d27e50f586bb33fdcd7f91bfde4436f12e28d0dfb19108",
-      "bytes": 2489
+      "sha256": "1b28aca0cd189e43ac84f0fc533b0766d345d9c3f8bdf576ba92191228a11ac8",
+      "bytes": 2538
     },
     {
       "path": "RIGHTS.md",
@@ -271,8 +266,8 @@
     },
     {
       "path": "scripts/audit_public_site.py",
-      "sha256": "244e5b31b784c841e39b458c635d6cea9fda8cd9b806889a1cd2e430d5569bb4",
-      "bytes": 2433
+      "sha256": "6880aaee2b803a2456c2e64f1be776bca91de29326ad2832165d19881839d44f",
+      "bytes": 2580
     },
     {
       "path": "scripts/build.mjs",
@@ -280,14 +275,19 @@
       "bytes": 790
     },
     {
+      "path": "scripts/test_static_site.py",
+      "sha256": "d0f44f2bd1ff013bed5eb91bb56af4bdf40555ec42a7c87d620b2947e7acc50c",
+      "bytes": 3507
+    },
+    {
       "path": "src/css/site.css",
-      "sha256": "880af4cb9761226873a57b2b186b14f0784bd965ad99cc139d1d1b2f2b54d1df",
-      "bytes": 23802
+      "sha256": "e68daeebff464183ce6319b4b3201886824ac330967844e8083f34911c86b5bf",
+      "bytes": 23956
     },
     {
       "path": "src/index.html",
-      "sha256": "88f1badaadf4ad5aff9807c9e2f95ef180ccc01fda52fd8aebdeaae479d08a46",
-      "bytes": 28384
+      "sha256": "d08c84173dcd8d5c50e533a26d5aadd6c7b46ded5d5b10932536019f743a6267",
+      "bytes": 28104
     },
     {
       "path": "src/js/app.js",

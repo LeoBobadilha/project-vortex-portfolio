@@ -16,11 +16,12 @@ for p in files:
  if p.suffix.lower()=='.csv':
   with p.open(encoding='utf-8-sig',newline='') as f:headers=next(csv.reader(f),[])
   if {'TradeID','OpportunityID','EntryPrice','StopPrice','TargetPrice','ExitPrice','SignalTimeUTC','EntryTimeUTC','ExitTimeUTC'} & set(headers):errors.append(f'Trade-level CSV fields in {p.relative_to(R)}')
-for req in ['README.md','src/index.html','dist/index.html','docs/security-review.md','public/data/benchmark_summary.csv','public/data/annual_portfolio_results.csv','public/data/monthly_portfolio_results.csv','public/images/powerbi/executive-overview.png','public/images/powerbi/report-gallery.png']:
+for req in ['README.md','src/index.html','dist/index.html','docs/security-review.md','public/data/benchmark_summary.csv','public/data/annual_portfolio_results.csv','public/data/monthly_portfolio_results.csv','public/images/powerbi/executive-overview.png']:
  if not (R/req).exists():errors.append('Missing '+req)
+if (R/'public/images/powerbi/report-gallery.png').exists() or (R/'dist/images/powerbi/report-gallery.png').exists():errors.append('Zoom-contaminated full-page gallery must remain withheld')
 if b'project-vortex-bi-showcase' not in (R/'src/index.html').read_bytes():errors.append('Website does not identify the companion BI repository')
 if b'14-page' not in (R/'dist/index.html').read_bytes():errors.append('Built page does not describe the 14-page public PBIP')
-payload={'reviewed':'2026-11-04','scope':'website source, generated dist, public aggregate data, chart images, Power BI screenshots and documentation','file_count':len(files),'errors':errors,'files':[{'path':p.relative_to(R).as_posix(),'sha256':hashlib.sha256(p.read_bytes()).hexdigest(),'bytes':p.stat().st_size} for p in sorted(files)]}
+payload={'reviewed':'2026-11-05','scope':'website source, generated dist, public aggregate data, chart images, Power BI screenshots and documentation','file_count':len(files),'errors':errors,'files':[{'path':p.relative_to(R).as_posix(),'sha256':hashlib.sha256(p.read_bytes()).hexdigest(),'bytes':p.stat().st_size} for p in sorted(files)]}
 manifest.write_text(json.dumps(payload,indent=2)+'\n',encoding='utf-8')
 print(json.dumps({k:v for k,v in payload.items() if k!='files'},indent=2))
 if errors:raise SystemExit(1)

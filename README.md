@@ -15,7 +15,7 @@ Open http://127.0.0.1:4174. The preview serves generated dist/ files.
 
 The three CSVs are approved portfolio-level aggregates. They contain no operation ledger. The companion [Project Vortex BI showcase](https://github.com/LeoBobadilha/project-vortex-bi-showcase) is the 14-page public-safe PBIP repository. The primary P6+SIZE+CE historical benchmark covers 2022-01-04 through 2026-10-20 (324 records, 526 contract units): gross R$23,551, net C30 R$20,395, recorded costs R$3,156, win rate 57.72%, PF 1.951 and realized close-order maximum drawdown R$1,932. No percentage return is reported because no starting-capital assumption is defined. The P6 baseline is separately reported and ends on a different date.
 
-The website's selected case visuals derive from verified historical chart captures. Exact dates, price scales, individual P&L and strategy identifiers are masked; candle geometry is retained. These selected cases are illustrative and not statistically representative.
+The featured Executive Overview is an unobstructed Power BI Desktop capture. The full-page screenshot gallery is temporarily withheld because eight of its existing page captures contain Zoom overlays; clean replacement captures require Power BI Desktop. The public PBIP remains available in the companion repository.
 
 ## Metric behavior
 
@@ -23,7 +23,7 @@ Year and gross/net selectors update monthly/annual P&L views. The headline profi
 
 ## Privacy and release
 
-No private trade ledger, executable strategy, raw M5 archive, broker credentials or account data is included. Only approved aggregates and deliberately redacted case visuals are shipped. This repository contains static website source and is not deployed to a public hosting URL.
+No private trade ledger, executable strategy, raw M5 archive, broker credentials or account data is included. Only approved aggregates and deliberately redacted case visuals are shipped. The public source repository is available on GitHub; the website has not been verified as deployed to a public hosting URL.
 
 The research lead's approved profile: [LinkedIn](https://www.linkedin.com/in/leonardobobadilha/). The companion public BI repository is linked above.
 
