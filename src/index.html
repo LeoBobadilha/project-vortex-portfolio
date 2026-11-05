@@ -16,8 +16,10 @@
   <title>Project Vortex | From Price Action Knowledge to Quantitative Research</title>
   <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
   <link rel="stylesheet" href="css/site.css">
+  <link rel="stylesheet" href="css/replay.css">
+  <script src="vendor/lightweight-charts.standalone.production.js" defer></script>
   <script src="js/app.js" defer></script>
-  <script src="js/trade-replay.js" defer></script>
+  <script type="module" src="js/trade-replay.js"></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -49,6 +51,7 @@
         <p class="hero-text">I developed Project Vortex to investigate whether discretionary Price Action concepts could be defined precisely enough for systematic testing. AI agents supported research, implementation and analysis across historical experiments. The market data cover 2022 to 2026; this is distinct from the project development timeline.</p>
         <div class="hero-actions">
           <a class="button button-primary" href="#performance">Explore the evidence <span aria-hidden="true">↓</span></a>
+        <a class="button button-secondary" href="#trade-replay">Watch the Historical Trade Replay</a>
           <a class="text-link" href="#knowledge">How the knowledge was built <span aria-hidden="true">↗</span></a>
         </div>
         <p class="hero-note"><span class="status-dot"></span> Independent research portfolio | No live signals or investment service</p>
@@ -181,45 +184,97 @@
           <div><p class="section-lede">The gallery presents six verified winners and two completed losses from the frozen case set. Charts retain recorded candle geometry and higher-timeframe context where available; sensitive timestamps, price scales, strategy identifiers and individual results are redacted.</p><p class="case-warning">These examples illustrate case review. They are not representative of the full trade distribution and do not establish profitability.</p></div>
         </div>
         <section class="trade-replay" id="trade-replay" aria-labelledby="trade-replay-title">
-          <div class="replay-heading">
-            <div><p class="eyebrow">Featured historical study</p><h3 id="trade-replay-title">Historical Trade Replay</h3><p class="replay-lede">A verified two-contract WIN short reconstructed from frozen backtest records and matching M5 candles. Step through the recorded price path; the display withholds exact date and clock time.</p></div>
-            <div class="replay-badges" aria-label="Instrument and source"><span>WIN · MINI INDEX</span><span>M5 BARS</span><span>HISTORICAL BACKTEST</span></div>
-          </div>
-          <div class="replay-layout">
-            <div class="replay-main">
-              <div class="replay-chart-wrap">
-                <div class="replay-chart-meta"><span id="replay-chart-state">Loading verified candle sample…</span><span>Price axis shifted · elapsed-time axis</span></div>
-                <div id="trade-replay-chart" class="trade-replay-chart" role="img" aria-label="Progressive M5 candlestick replay. No future candles are displayed."><svg id="trade-replay-svg" viewBox="0 0 900 390" aria-hidden="true"></svg><p class="replay-error" id="replay-error" hidden>The historical replay could not be loaded. The chart is unavailable in this session.</p></div>
-              </div>
-              <div class="replay-controls" role="group" aria-label="Historical replay controls">
-                <div class="replay-button-row">
-                  <button type="button" data-replay-action="play" aria-label="Play replay">Play</button>
-                  <button type="button" data-replay-action="pause" aria-label="Pause replay">Pause</button>
-                  <button type="button" data-replay-action="restart">Restart</button>
-                  <button type="button" data-replay-action="previous" aria-label="Show previous candle">Previous candle</button>
-                  <button type="button" data-replay-action="next" aria-label="Show next candle">Next candle</button>
-                  <button type="button" data-replay-action="entry">Jump to entry</button>
-                  <button type="button" data-replay-action="exit">Jump to exit</button>
-                  <label class="replay-speed">Speed<select id="replay-speed" aria-label="Playback speed"><option value="0.5">0.5×</option><option value="1" selected>1×</option><option value="2">2×</option><option value="4">4×</option></select></label>
-                </div>
-                <label class="replay-timeline-label" for="replay-timeline"><span>Timeline</span><span id="replay-progress-text">Preparing replay</span></label>
-                <input id="replay-timeline" type="range" min="0" max="20" value="0" step="1" aria-label="Select the latest visible candle">
-              </div>
-              <p class="replay-accessible-status" id="replay-live-status" role="status" aria-live="polite">Loading historical candle data.</p>
-            </div>
-            <aside class="replay-side" aria-label="Current replay information">
-              <div class="replay-position-card"><span class="replay-card-label">Position state</span><strong id="replay-position">Loading</strong><p id="replay-mark-label">Only the currently visible candle sequence is used.</p><span class="replay-card-label" id="replay-mark-title">Current gross mark</span><strong id="replay-mark">—</strong></div>
-              <div class="replay-stage-card"><span class="replay-card-label" id="replay-stage-label">Replay stage</span><h4 id="replay-stage-title">Historical context</h4><p id="replay-stage-copy">A short pre-entry context is shown first. The chart does not include later bars until playback reaches them.</p></div>
-              <div class="replay-outcome" id="replay-outcome" hidden>
-                <span class="replay-card-label">Completed trade summary</span><h4>Recorded outcome</h4>
-                <dl><div><dt>Price move</dt><dd id="replay-final-points">—</dd></div><div><dt>Gross P&amp;L · 2 contracts</dt><dd id="replay-final-gross">—</dd></div><div><dt>C30 cost scenario</dt><dd id="replay-final-cost">—</dd></div><div><dt>Net C30 result</dt><dd id="replay-final-net">—</dd></div><div><dt>Recorded MFE / MAE</dt><dd id="replay-final-excursion">—</dd></div></dl>
-              </div>
-            </aside>
-          </div>
-          <p class="replay-method">The displayed price axis uses a constant offset and the horizontal axis uses elapsed minutes from entry. Candle geometry, five-minute spacing and point movements are preserved. No strategy trigger parameters are shown.</p>
-          <p class="replay-disclosure">Selected historical backtest example. This operation is not representative of all trades. Past performance does not guarantee future results.</p>
-          <p class="replay-public-link">Portfolio context and risk definitions: <a href="https://github.com/LeoBobadilha/project-vortex-bi-showcase">Project Vortex Power BI showcase</a>.</p>
-        </section>
+  <div class="replay-heading">
+    <div>
+      <p class="eyebrow">Featured historical case study</p>
+      <h3 id="trade-replay-title">Building a position through a pullback</h3>
+      <p class="replay-lede">A separate research backtest records an initial one-contract WIN long, a market retracement, and a distinct one-contract add-on. Replay the full available M5 session, from its opening bars through the trade and beyond the exit.</p>
+    </div>
+    <div class="replay-badges" aria-label="Case characteristics"><span>WIN · MINI INDEX</span><span>LONG</span><span>5-MINUTE BARS</span><span>1 + 1 CONTRACTS</span><span>HISTORICAL SIMULATION</span></div>
+  </div>
+  <div class="replay-layout">
+    <div class="replay-main">
+      <div class="replay-chart-wrap">
+        <div class="replay-chart-meta"><span id="replay-chart-state">Loading full-session M5 data…</span><span>Relative session clock · translated price axis</span></div>
+        <div class="replay-chart-frame">
+          <div id="trade-replay-chart" class="trade-replay-chart" role="img" aria-label="Interactive progressive M5 candlestick chart. Only candles reached by playback are drawn."></div>
+          <div id="replay-hover" class="replay-hover" hidden aria-hidden="true"></div>
+          <p class="replay-error" id="replay-error" hidden>The historical replay could not be loaded. Please reload the page.</p>
+        </div>
+        <p class="replay-chart-help">Drag to pan · Use the wheel or pinch to zoom · Hover or tap a candle to inspect OHLC</p>
+      </div>
+      <div class="replay-event-track" role="group" aria-label="Trade event timeline">
+        <button type="button" data-replay-action="entry1">01 <span>Entry 1</span></button>
+        <button type="button" data-replay-action="pullback">02 <span>Pullback</span></button>
+        <button type="button" data-replay-action="entry2">03 <span>Add +1</span></button>
+        <button type="button" data-replay-action="exit">04 <span>Exit</span></button>
+        <button type="button" data-replay-action="postexit">05 <span>Post-exit</span></button>
+      </div>
+      <div class="replay-controls" role="group" aria-label="Replay controls">
+        <div class="replay-control-row">
+          <button type="button" class="replay-control-primary" data-replay-action="play" aria-label="Play replay"><span aria-hidden="true">▶</span> Play</button>
+          <button type="button" data-replay-action="pause" aria-label="Pause replay"><span aria-hidden="true">Ⅱ</span> Pause</button>
+          <button type="button" data-replay-action="restart" aria-label="Restart at session context"><span aria-hidden="true">↺</span> Restart</button>
+          <span class="replay-control-divider" aria-hidden="true"></span>
+          <button type="button" data-replay-action="previous" aria-label="Previous candle">‹ Prev</button>
+          <button type="button" data-replay-action="next" aria-label="Next candle">Next ›</button>
+          <span class="replay-control-spacer"></span>
+          <button type="button" data-replay-action="zoomout" aria-label="Zoom out">−</button>
+          <button type="button" data-replay-action="zoomin" aria-label="Zoom in">+</button>
+          <button type="button" data-replay-action="fit" aria-label="Fit all candles currently visible">Fit visible</button>
+          <button type="button" data-replay-action="fit-session" aria-label="Fit the complete session after all candles have been revealed" disabled>Fit full session</button>
+          <label class="replay-speed">Speed
+            <select id="replay-speed" aria-label="Playback speed"><option value="0.5">0.5×</option><option value="1" selected>1×</option><option value="2">2×</option><option value="4">4×</option></select>
+          </label>
+        </div>
+        <label class="replay-timeline-label" for="replay-timeline"><span>Session timeline</span><span id="replay-progress-text">Preparing replay</span></label>
+        <input id="replay-timeline" type="range" min="0" max="106" value="30" step="1" aria-label="Select the last visible M5 candle">
+      </div>
+      <p class="replay-accessible-status" id="replay-live-status" role="status" aria-live="polite">Loading historical candle data.</p>
+    </div>
+    <aside class="replay-side" aria-label="Live position and case information">
+      <div class="replay-position-card">
+        <div class="replay-card-heading"><span class="replay-card-label">Live position</span><span class="replay-state-pill" id="replay-position-state">FLAT</span></div>
+        <strong class="replay-position-qty" id="replay-position">0 contracts</strong>
+        <p id="replay-mark-label">No position is open. Replay begins with the full pre-entry session context.</p>
+        <div class="replay-kpi-grid">
+          <div><span id="replay-mark-title">Open gross P&amp;L</span><strong id="replay-mark">—</strong></div>
+          <div><span>Weighted average</span><strong id="replay-average">—</strong></div>
+          <div><span>Entry 1 · 1 contract</span><strong id="replay-entry1-price">—</strong></div>
+          <div><span>Entry 2 · add 1</span><strong id="replay-entry2-price">—</strong></div>
+        </div>
+      </div>
+      <div class="replay-stage-card">
+        <span class="replay-card-label" id="replay-stage-label">STAGE 01 · MARKET CONTEXT</span>
+        <h4 id="replay-stage-title">The session opens with no position</h4>
+        <p id="replay-stage-copy">All 31 available M5 bars before the first entry are shown. Use pan, zoom, or the timeline to review the developing structure.</p>
+      </div>
+      <div class="replay-outcome" id="replay-outcome" hidden>
+        <span class="replay-card-label">CLOSED POSITION · S2 COST SCENARIO</span>
+        <h4>Recorded research result</h4>
+        <dl>
+          <div><dt>Leg 1 · gross</dt><dd id="replay-leg1-gross">—</dd></div>
+          <div><dt>Leg 2 · gross</dt><dd id="replay-leg2-gross">—</dd></div>
+          <div><dt>Combined gross</dt><dd id="replay-final-gross">—</dd></div>
+          <div><dt>S2 costs · 2 legs</dt><dd id="replay-final-cost">—</dd></div>
+          <div class="replay-net-row"><dt>Combined net</dt><dd id="replay-final-net">—</dd></div>
+          <div><dt>Position after exit</dt><dd>Flat · 0 contracts</dd></div>
+        </dl>
+        <p class="replay-postexit-note" id="replay-postexit-note">The position is closed. Playback continues through the later market bars.</p>
+      </div>
+    </aside>
+  </div>
+  <details class="replay-method">
+    <summary>Methodology, execution assumptions and limitations</summary>
+    <div class="replay-method-copy">
+      <p>This is a separate exploratory historical backtest case, not a trade from the PSC portfolio benchmark, Paper Live, or a live account. The frozen event ledger records two distinct one-contract simulated legs. A confirmed pullback touch precedes the add-on; the replay uses the full available 107-bar session, including 39 candles after the modeled exit.</p>
+      <p>The underlying source is continuous adjusted PRICE_ONLY M5 OHLC. The source timezone is unauthenticated, and the bars do not certify bid/ask quotes, executable fills, or intrabar sequencing. Fill events are revealed after their associated five-minute candle is complete to avoid showing that candle's high, low, or close before it would be available. The price axis is translated and the time axis is relative to session open; candle geometry remains recognizable and may be correlated with public market data.</p>
+      <p>The displayed S2 research stress scenario deducts R$6 per contract: R$2 round-trip brokerage plus 20 adverse round-trip points at R$0.20 per point. Other fees are excluded by the source study. This is not the portfolio's C30 cost model.</p>
+    </div>
+  </details>
+  <p class="replay-disclosure">Selected historical backtest example. This operation is not representative of all trades. Past performance, including historical backtests and simulated trading results, does not guarantee future results. Live trading involves risk, and actual execution may differ materially from simulated outcomes.</p>
+  <p class="replay-public-link">Portfolio context and risk definitions: <a href="https://github.com/LeoBobadilha/project-vortex-bi-showcase">Project Vortex Power BI showcase</a>. Chart engine: <a href="https://www.tradingview.com/lightweight-charts/" target="_blank" rel="noreferrer">TradingView Lightweight Charts</a>.</p>
+</section>
         <div class="case-filter" role="group" aria-label="Filter case studies">
           <button class="filter-chip is-active" type="button" data-case-filter="all" aria-pressed="true">All cases <span>08</span></button>
           <button class="filter-chip" type="button" data-case-filter="win" aria-pressed="false">Winners <span>06</span></button>

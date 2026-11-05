@@ -1,29 +1,27 @@
-# Historical Trade Replay Methodology
+# Historical Pyramiding Replay Methodology
 
-The replay uses one completed two-contract WIN short selected from the frozen P6+SIZE+CE (PSC) backtest ledger. It is a single historical case study, not a representative sample and not live trading evidence.
+The featured replay uses one completed WIN long from a separate exploratory H36AAA historical scaling study. It is not a row from the PSC aggregate benchmark, Paper Live, or a live account. The separate frozen event ledger contains two independently recorded one-contract legs and one shared modeled exit.
 
-## Reconciliation
+## Event sequence and market coverage
 
-The selected row is the highest positive point-capture record among the PSC ledger's 66 completed two-contract winners. Its directional entry-to-exit movement is 2,930 index points. Under the verified WIN point value of R$0.20 per point per contract, gross P&L is R$1,172. The locked C30 scenario charges 30 points per contract once: 30 × 2 × R$0.20 = R$12. The resulting net C30 amount is R$1,160. The replay does not apply another cost deduction. The row records one two-contract operation; no separate add-on sequence is available or represented.
+The operation progresses from flat to one contract, through a recorded pullback touch, to a separate one-contract addition, and then back to flat at the recorded exit. Both entry and exit prices fall within their associated M5 OHLC envelopes. The selected session has 107 consecutive M5 bars, beginning at the first available session bar, with 31 bars before Entry 1 and 39 after the modeled exit. The replay starts with the 31-bar pre-entry context and continues after the position closes.
 
-The entry and exit times resolve to the same continuous WIN M5 source series. Both recorded fills fall inside their corresponding candles. The 21 displayed bars cover six context candles before entry through the exit candle, with no missing five-minute interval. The recorded 3,625-point maximum favorable excursion and 55-point maximum adverse excursion match the entry-to-exit M5 OHLC envelope.
+The five-minute OHLC record cannot establish intrabar sequencing. Each simulated fill is therefore revealed after its associated candle is complete. The candle's high, low, and close are not presented before that bar becomes visible. The replay uses separate entry events and computes open marks for each leg independently from the latest visible completed close. After exit, the position remains flat and realized P&L stays fixed while later candles appear.
 
-## Public representation
+## Result and costs
 
-The public dataset contains only the selected 21 OHLC bars and the minimum event metadata needed by the replay. A constant offset shifts every price while preserving candle geometry, tick increments and point movement. Calendar date, exact clock times, contract expiry, source row index, strategy identifier and private ledger fields are omitted. The horizontal axis therefore shows elapsed minutes from entry, and the vertical axis shows shifted prices.
+The first leg records 2,027 favorable points and R$405.40 gross. The second records 1,724 points and R$344.80 gross. At R$0.20 per point per contract, the two-leg result totals 3,751 contract-points and R$750.20 gross. The weighted average entry is the arithmetic mean of the two one-contract fills.
 
-The completed result is stored separately from the candle file and requested only after playback reaches the exit. The interface draws only candles up to the current replay step. Open P&L is marked from the latest visible completed M5 close and is labeled as a gross mark. The completed summary appears only at the exit.
+The display applies the research study's S2 stress scenario once per contract: R$2 round-trip brokerage plus 20 adverse round-trip points at R$0.20 per point, or R$6 per leg. Total S2 costs are R$12 and the resulting net is R$738.20. Other fees are excluded in the source study. S2 is not the PSC portfolio's C30 scenario and these results must not be merged with PSC metrics.
 
-This is a deliberate reduction of exposure, not a guarantee against correlation with external market data. The retained candle shape and point moves may still be recognizable. Private source paths, row identifiers and full market archives are not included in the repository.
+## Public data and reproducibility
 
-## Reproduction and local audit
+The browser receives 107 OHLC bars with a constant price translation and elapsed minutes from session open. A separate outcome file is requested only after playback reaches the recorded exit. The raw market archive, source date and clock, event IDs, exact unshifted price scale, ledger, code and strategy parameters remain private. The public transformation preserves candle shape and point distances; market-correlation risk remains.
 
-The sanitized files are `public/data/replay/two-contract-win.json` and `public/data/replay/two-contract-win-outcome.json`. `scripts/test_trade_replay.py` checks candle order, event bounds, the two-contract sizing, directional points, gross BRL, C30 cost, net BRL, excursions and the public/private data boundary.
+The sanitized files are `public/data/replay/pyramiding-win-session.json` and `public/data/replay/pyramiding-win-outcome.json`. Run `npm run test:replay` to check position progression, per-leg P&L, weighted average entry, S2 costs, chronology, candle geometry, full-session coverage, post-exit bars, and the public-data boundary. The source-linked ledger reconciliation, hashes and exact event mapping are maintained in a private local validation record.
 
-The source-linked row, source file hashes, exact source timestamps and original prices are retained in a private validation record outside the public repositories. The local implementation workspace contains the sanitizer used to reproduce the public export; it is intentionally excluded from the public website and BI repositories.
+## Source limitations
 
-## Limitations
+The underlying series is continuous adjusted PRICE_ONLY OHLC. It does not certify bid/ask quotes, exchange-executable fills, contract rollover behavior, or exact intrabar path. The source clock's timezone is unauthenticated; the public chart therefore uses session-relative time. The source study states that the tested period had prior research exposure and is not an untouched holdout. This selected winning example is illustrative, not representative or evidence of future profitability.
 
-M5 OHLC bars cannot show the intrabar tick path or establish the precise ordering of every price inside a candle. The ledger supplies the recorded fills; the bars are used to verify candle coverage, fill-range consistency and the excursions. The animation is a stepwise historical visualization, not an execution simulator. The example's positive result must not be generalized to other trades.
-
-> Selected historical backtest example. This operation is not representative of all trades. Past performance does not guarantee future results.
+> Selected historical backtest example. This operation is not representative of all trades. Past performance, including historical backtests and simulated trading results, does not guarantee future results. Live trading involves risk, and actual execution may differ materially from simulated outcomes.

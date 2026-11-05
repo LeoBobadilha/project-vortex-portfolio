@@ -10,4 +10,5 @@ await cp(path.join(root, 'src/css'), path.join(out, 'css'), { recursive: true })
 await cp(path.join(root, 'src/js'), path.join(out, 'js'), { recursive: true });
 await cp(path.join(root, 'public/images'), path.join(out, 'images'), { recursive: true });
 await cp(path.join(root, 'public/data'), path.join(out, 'data'), { recursive: true });
+await cp(path.join(root, 'public/vendor'), path.join(out, 'vendor'), { recursive: true });
 console.log('Static portfolio built in dist/.');

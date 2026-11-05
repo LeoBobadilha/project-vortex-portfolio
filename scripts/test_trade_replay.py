@@ -5,75 +5,98 @@ import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-PUBLIC = ROOT / "public/data/replay/two-contract-win.json"
-OUTCOME = ROOT / "public/data/replay/two-contract-win-outcome.json"
-HTML = ROOT / "src/index.html"
-SCRIPT = ROOT / "src/js/trade-replay.js"
-errors: list[str] = []
+DATA_PATH = ROOT / "public/data/replay/pyramiding-win-session.json"
+OUTCOME_PATH = ROOT / "public/data/replay/pyramiding-win-outcome.json"
+HTML_PATH = ROOT / "src/index.html"
+SCRIPT_PATH = ROOT / "src/js/trade-replay.js"
+ERRORS: list[str] = []
 
-if not PUBLIC.is_file() or not OUTCOME.is_file():
-    errors.append("Sanitized replay files are missing")
+data = json.loads(DATA_PATH.read_text(encoding="utf-8"))
+outcome = json.loads(OUTCOME_PATH.read_text(encoding="utf-8"))
+candles = data["candles"]
+indices = data["indices"]
+events = data["events"]
+entries = sorted((event for event in events if event["type"] == "entry"), key=lambda e: e["index"])
+
+if len(candles) != 107 or data["session"]["barCount"] != 107:
+    ERRORS.append("Replay must contain the complete 107-bar available session")
+if indices != {"entry1": 31, "pullback": 33, "entry2": 34, "exit": 67, "postExitCheckpoint": 72}:
+    ERRORS.append("Event positions must match the audited session chronology")
+if candles[0]["t"] != 0 or candles[-1]["t"] != 530:
+    ERRORS.append("Session-relative timestamps do not span the full source session")
+if any(candles[i]["t"] - candles[i - 1]["t"] != 5 for i in range(1, len(candles))):
+    ERRORS.append("All M5 candles must remain chronological with five-minute spacing")
+if len(candles) - 1 - indices["exit"] < 5:
+    ERRORS.append("At least five real candles must follow the recorded exit")
+if len(entries) != 2 or [event["quantity"] for event in entries] != [1, 1]:
+    ERRORS.append("Two separately recorded one-contract entry events are required")
+if entries[0]["index"] >= indices["pullback"] or indices["pullback"] >= entries[1]["index"]:
+    ERRORS.append("A genuine intervening pullback must precede the separately recorded add-on")
+if outcome["exitQuantity"] != 2 or outcome["exitIndex"] != indices["exit"]:
+    ERRORS.append("The exit must close the complete two-contract position at the audited event")
+for i, candle in enumerate(candles):
+    if not (candle["l"] <= min(candle["o"], candle["c"]) <= max(candle["o"], candle["c"]) <= candle["h"]):
+        ERRORS.append(f"Invalid OHLC geometry at candle {i}")
+for entry in entries:
+    bar = candles[entry["index"]]
+    if not bar["l"] <= entry["price"] <= bar["h"]:
+        ERRORS.append(f"{entry['label']} simulated fill is outside its associated M5 envelope")
+exit_bar = candles[outcome["exitIndex"]]
+if not exit_bar["l"] <= outcome["exitPrice"] <= exit_bar["h"]:
+    ERRORS.append("The modeled exit price is outside its associated M5 envelope")
+pullback_event = next(event for event in events if event["type"] == "pullback")
+if candles[pullback_event["index"]]["l"] != pullback_event["price"]:
+    ERRORS.append("The pullback marker does not match its historical low")
+if candles[indices["pullback"]]["l"] >= candles[indices["entry1"]]["h"]:
+    ERRORS.append("The pullback marker does not coincide with a retracement from the first-entry candle")
+if len(outcome["legs"]) != 2:
+    ERRORS.append("Per-leg outcome records are required")
 else:
-    data = json.loads(PUBLIC.read_text(encoding="utf-8"))
-    outcome = json.loads(OUTCOME.read_text(encoding="utf-8"))
-    candles = data["candles"]
-    if data.get("contracts") != 2:
-        errors.append("Replay must describe exactly two contracts")
-    if data.get("direction") not in {"LONG", "SHORT"}:
-        errors.append("Replay direction is invalid")
-    if len(candles) != 21:
-        errors.append("Replay must include the verified 21-bar window")
-    if not (0 <= data["entryIndex"] < data["exitIndex"] < len(candles)):
-        errors.append("Entry/exit chronology is outside the candle window")
-    if candles[data["entryIndex"]]["t"] != 0:
-        errors.append("Entry candle must be the zero-minute reference")
-    if candles[data["exitIndex"]]["t"] != outcome["durationMinutes"]:
-        errors.append("Exit event does not match the recorded elapsed duration")
-    for i, candle in enumerate(candles):
-        if not (candle["l"] <= min(candle["o"], candle["c"]) <= max(candle["o"], candle["c"]) <= candle["h"]):
-            errors.append(f"Candle {i} has invalid OHLC geometry")
-        if i and candle["t"] - candles[i - 1]["t"] != 5:
-            errors.append(f"Candle {i} is not exactly five minutes after the previous bar")
-    entry = data["entryPrice"]
-    exit_price = outcome["exitPrice"]
-    directional_points = entry - exit_price if data["direction"] == "SHORT" else exit_price - entry
-    if directional_points != outcome["grossPoints"] or directional_points <= 0:
-        errors.append("Directional points do not match the selected winning trade")
-    if outcome["grossBRL"] != outcome["grossPoints"] * data["contracts"] * 0.2:
-        errors.append("Gross BRL does not match the WIN point-value calculation")
-    if outcome["costBRL"] != 30 * data["contracts"] * 0.2:
-        errors.append("C30 costs are not charged once per contract")
-    if outcome["netBRL"] != outcome["grossBRL"] - outcome["costBRL"]:
-        errors.append("Net C30 does not reconcile to gross less one cost deduction")
-    in_trade = candles[data["entryIndex"] : data["exitIndex"] + 1]
-    mfe = max(entry - c["l"] for c in in_trade) if data["direction"] == "SHORT" else max(c["h"] - entry for c in in_trade)
-    mae = max(c["h"] - entry for c in in_trade) if data["direction"] == "SHORT" else max(entry - c["l"] for c in in_trade)
-    if mfe != outcome["mfePoints"] or mae != outcome["maePoints"]:
-        errors.append("MFE/MAE do not match the displayed entry-to-exit bar envelope")
-    combined = json.dumps(data) + json.dumps(outcome)
-    if re.search(r"\b(?:202[0-9]-[01][0-9]-[0-3][0-9]|\d{2}:\d{2}|AAF_DESC|TRIANGLE_V1|WING26)\b", combined):
-        errors.append("Public replay contains a source date, clock time, contract expiry or private strategy identifier")
-    if any(k in data for k in ("grossPoints", "grossBRL", "netBRL", "mfePoints", "maePoints")):
-        errors.append("Completed-trade metrics must be kept out of the initial candle payload")
+    for index, leg in enumerate(outcome["legs"]):
+        if leg["quantity"] != 1:
+            ERRORS.append(f"Leg {index + 1} quantity must be one contract")
+        points = leg["exitPrice"] - leg["entryPrice"]
+        if points != leg["grossPoints"]:
+            ERRORS.append(f"Leg {index + 1} points do not reconcile")
+        if round(points * data["brlPerPointPerContract"], 2) != leg["grossBRL"]:
+            ERRORS.append(f"Leg {index + 1} gross BRL does not reconcile")
+        if round(leg["grossBRL"] - leg["costBRL"], 2) != leg["netBRL"]:
+            ERRORS.append(f"Leg {index + 1} net BRL does not reconcile")
+    if outcome["averageEntryPrice"] != sum(leg["entryPrice"] for leg in outcome["legs"]) / 2:
+        ERRORS.append("Weighted average entry price is incorrect")
+if (outcome["grossPoints"], outcome["grossBRL"], outcome["costBRL"], outcome["netBRL"]) != (3751, 750.2, 12.0, 738.2):
+    ERRORS.append("Combined verified result must reconcile to 3,751 points / R$750.20 gross / R$12 S2 / R$738.20 net")
+cost_model = outcome["costModel"]
+expected_cost = outcome["exitQuantity"] * (cost_model["roundTripBrokerageBRLPerContract"] + cost_model["adverseRoundTripPointsPerContract"] * cost_model["brlPerPointPerContract"])
+if expected_cost != outcome["costBRL"] or outcome["costScenario"] != "S2 research stress scenario":
+    ERRORS.append("S2 costs must be applied once per contract and must not be labelled C30")
+if any(key in data for key in ("grossBRL", "netBRL", "exitPrice", "sourceDate", "sourceTimestamps")):
+    ERRORS.append("Final outcome data must remain separate from the initial candle payload")
+combined = json.dumps(data) + json.dumps(outcome)
+if re.search(r"\b(?:202[0-9]-[01][0-9]-[0-3][0-9]|\d{2}:\d{2}|ZZP-FLAG|H36AAA|P1_ENTRY_CUTOFF|PB1)\b", combined):
+    ERRORS.append("Public replay contains a source date, clock time, internal ID, variant, or strategy label")
+if "pyramiding-win-session.json" not in SCRIPT_PATH.read_text(encoding="utf-8"):
+    ERRORS.append("Replay controller does not request the new sanitized session dataset")
+script = SCRIPT_PATH.read_text(encoding="utf-8")
+html = HTML_PATH.read_text(encoding="utf-8")
+for action in ("play", "pause", "restart", "previous", "next", "entry1", "pullback", "entry2", "exit", "postexit", "zoomout", "zoomin", "fit", "fit-session"):
+    if f'data-replay-action="{action}"' not in html:
+        ERRORS.append(f"Missing functional replay action: {action}")
+if "slice(0, current + 1)" not in script:
+    ERRORS.append("Chart renderer must withhold candles beyond the current playback index")
+if "go(current + 1).then(play)" not in script:
+    ERRORS.append("Playback must continue after the exit through post-exit candles")
+if 'fetch("data/replay/pyramiding-win-outcome.json"' not in script:
+    ERRORS.append("The completed outcome request is missing")
+if "TradingView Lightweight Charts" not in html or "vendor/lightweight-charts" not in html:
+    ERRORS.append("Chart library attribution or local asset reference is missing")
+if "priceRange" not in script or "current + 1" not in script:
+    ERRORS.append("Chart viewport must use only the candles already revealed, with a deterministic visible-data range")
+if "WATCH THE HISTORICAL" not in html.upper() and "Watch the Historical Trade Replay" not in html:
+    ERRORS.append("The replay must be discoverable from the project introduction")
 
-html = HTML.read_text(encoding="utf-8")
-script = SCRIPT.read_text(encoding="utf-8")
-if 'src="js/trade-replay.js" defer' not in html or 'id="trade-replay"' not in html:
-    errors.append("Replay section or controller is not connected to the page")
-if "data/replay/two-contract-win-outcome.json" not in script:
-    errors.append("Completion summary endpoint is missing")
-elif not re.search(r"if\(current>=data\.exitIndex\)\{stop\(\);loadOutcome\(\)", script):
-    errors.append("Completion summary is not gated on reaching the exit candle")
-if 'fetch("data/replay/two-contract-win.json")' not in script:
-    errors.append("Initial replay candle request is missing")
-if "prefers-reduced-motion" not in script or "prefers-reduced-motion" not in (ROOT / "src/css/site.css").read_text(encoding="utf-8"):
-    errors.append("Reduced-motion preference is not addressed")
-for control in ("play", "pause", "restart", "previous", "next", "entry", "exit"):
-    if f'data-replay-action="{control}"' not in html:
-        errors.append(f"Missing replay control: {control}")
-
-print(f"Historical replay audit: {len(errors)} error(s)")
-for error in errors:
+print(f"Pyramiding replay data audit: {len(ERRORS)} error(s)")
+for error in ERRORS:
     print(f"- {error}")
-if errors:
+if ERRORS:
     raise SystemExit(1)

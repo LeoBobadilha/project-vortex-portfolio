@@ -2,9 +2,10 @@
 
 ## Unreleased
 
-- Added an interactive, price-shifted replay of a verified two-contract WIN historical backtest trade, with gross and C30 net outcomes gated until the exit step.
+- Replaced the fixed two-contract PSC replay with a separate, event-ledger-backed one-plus-one WIN scaling study. The new replay covers the available 107-bar session, shows 39 candles after exit, and reports its distinct S2 research cost scenario without mixing it with PSC C30 metrics.
+- Added an interactive candlestick chart using locally bundled TradingView Lightweight Charts, accessible replay controls, per-leg position marks, and position-state regression tests in the Pages workflow.
 - Added a six-image Power BI gallery with keyboard-operable full-size previews. Eight report-page captures remain withheld pending genuine Desktop recapture.
-- Added reproducible public replay checks and a methodology note; the source-linked validation record remains local and private.
+- Added reproducible public replay checks and refreshed the methodology and data-provenance notes; the source-linked validation record remains local and private.
 
 ## Published main update (0b4b617)
 

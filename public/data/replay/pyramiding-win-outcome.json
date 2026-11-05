@@ -1,0 +1,39 @@
+{
+  "exitIndex": 67,
+  "exitPrice": 102027,
+  "exitQuantity": 2,
+  "costScenario": "S2 research stress scenario",
+  "costModel": {
+    "roundTripBrokerageBRLPerContract": 2.0,
+    "adverseRoundTripPointsPerContract": 20.0,
+    "brlPerPointPerContract": 0.2
+  },
+  "legs": [
+    {
+      "quantity": 1,
+      "entryPrice": 100000,
+      "exitPrice": 102027,
+      "grossPoints": 2027,
+      "grossBRL": 405.4,
+      "costBRL": 6.0,
+      "netBRL": 399.4
+    },
+    {
+      "quantity": 1,
+      "entryPrice": 100303,
+      "exitPrice": 102027,
+      "grossPoints": 1724,
+      "grossBRL": 344.8,
+      "costBRL": 6.0,
+      "netBRL": 338.8
+    }
+  ],
+  "averageEntryPrice": 100151.5,
+  "grossPoints": 3751,
+  "grossBRL": 750.2,
+  "costBRL": 12.0,
+  "netBRL": 738.2,
+  "netMethod": "Gross less S2 stress cost once per each of two contract legs; not C30.",
+  "researchDisclosure": "Selected example from a separate exploratory historical backtest; not a PSC portfolio record, Paper Live result, or live trade.",
+  "exitResolution": "The frozen OHLC replay records one shared model exit for both legs; M5 intrabar sequencing is not certified."
+}
