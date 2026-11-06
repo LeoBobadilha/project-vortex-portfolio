@@ -413,8 +413,8 @@
     },
     {
       "path": "scripts/test_trade_replay.py",
-      "sha256": "f33594082a29b5d1b1f7df5168c2696ecb3a4983e8a8b941e91e5ff841e49258",
-      "bytes": 9531
+      "sha256": "02b1011a487728fb337af4b6b2a8617dddd3951381530e57aff64cf71f7414b5",
+      "bytes": 10005
     },
     {
       "path": "src/css/replay.css",

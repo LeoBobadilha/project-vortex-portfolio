@@ -46,6 +46,16 @@ clock_end_total = clock_start_hour * 60 + clock_start_minute + candles[-1]["t"]
 clock_at_end = f"{(clock_end_total // 60) % 24:02d}:{clock_end_total % 60:02d}"
 if clock_at_start != "09:00" or clock_at_end != "17:50":
     ERRORS.append(f"Source-session clock labels must span 09:00 to 17:50; found {clock_at_start} to {clock_at_end}")
+clock_script = SCRIPT_PATH.read_text(encoding="utf-8")
+for clock_use in (
+    "const sourceClock =",
+    "tickMarkFormatter: (time) => sourceClock(Number(time) / 60)",
+    "timeFormatter: (time) => sourceClock(Number(time) / 60)",
+    "sourceClock(data.candles[ix].t)",
+    "Source-session clock ${sourceClock(candle.t)}",
+):
+    if clock_use not in clock_script:
+        ERRORS.append(f"Chart clock label is not wired to the qualified source clock formatter: {clock_use}")
 if data.get("privacy", {}).get("sourceSessionDatePublished") is not True:
     ERRORS.append("Public privacy metadata must record the authorized date disclosure")
 if outcome.get("resultBasis") != "unrounded arithmetic from adjusted-price research-model fills; not exchange-executable P&L":
