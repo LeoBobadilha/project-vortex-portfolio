@@ -200,7 +200,7 @@
   <div class="replay-layout">
     <div class="replay-main">
       <div class="replay-chart-wrap">
-        <div class="replay-chart-meta"><span id="replay-chart-state">Loading full-session M5 data…</span><span>Relative session clock · translated price axis</span></div>
+        <div class="replay-chart-meta"><span id="replay-chart-state">Loading full-session M5 data…</span><span>Source-session clock · timezone unverified · translated price axis</span></div>
         <div class="replay-chart-frame">
           <div id="trade-replay-chart" class="trade-replay-chart" role="img" aria-label="Interactive progressive M5 candlestick chart. Only candles reached by playback are drawn."></div>
           <div id="replay-hover" class="replay-hover" hidden aria-hidden="true"></div>
@@ -273,7 +273,7 @@
     <summary>Methodology, execution assumptions and limitations</summary>
     <div class="replay-method-copy">
       <p>This is a separate exploratory historical backtest case, not a trade from the PSC portfolio benchmark, Paper Live, or a live account. The frozen event ledger records two distinct one-contract simulated legs. A confirmed pullback touch precedes the add-on; the replay uses the full available 107-bar session, including 39 candles after the modeled exit.</p>
-      <p>The underlying source is continuous adjusted PRICE_ONLY M5 OHLC. The source timezone is unauthenticated, and the bars do not certify bid/ask quotes, executable fills, or intrabar sequencing. Fill events are revealed after their associated five-minute candle is complete to avoid showing that candle's high, low, or close before it would be available. The price axis is translated and the time axis is relative to session open; candle geometry remains recognizable and may be correlated with public market data.</p>
+      <p>The underlying source is continuous adjusted PRICE_ONLY M5 OHLC. The displayed source-session clock runs from 09:00 to 17:50, but its timezone is unauthenticated and these labels are not certified B3 local timestamps. The bars do not certify bid/ask quotes, executable fills, or intrabar sequencing. Fill events are revealed after their associated five-minute candle is complete to avoid showing that candle's high, low, or close before it would be available. The price axis is translated; candle geometry remains recognizable and may be correlated with public market data.</p>
       <p>The source study sets WIN's minimum tick to five index points, but this case's recorded research-model prices are not all on that grid. Entry 1 is grid-aligned; Entry 2 and the modeled exit are not. The translated public values preserve those grid residuals. The 20-cent remainder arises from exact model arithmetic: 2,027 + 1,724 = 3,751 points, and 3,751 × R$0.20 = R$750.20. It is not a currency-rounding issue. Because the price source is adjusted continuous OHLC and lacks certified contract quotes, the result is an adjusted-price model output, not tick-valid B3 performance. No fills have been rounded or snapped; that would require rerunning the strategy against a verified unadjusted contract series.</p>
       <p>The S2 research stress scenario deducts R$6 per modeled contract: R$2 round-trip brokerage plus two adverse ticks per side (20 points total) at R$0.20 per point. Other fees are excluded by the source study. This cost assumption does not make the off-grid model fills executable, and S2 is not the portfolio's C30 cost model.</p>
     </div>

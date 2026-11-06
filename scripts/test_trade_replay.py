@@ -38,6 +38,14 @@ if data.get("tickSizePoints") != 5 or data.get("exchangeExecutablePricesVerified
     ERRORS.append("WIN tick size and non-executable adjusted-price classification must be explicit")
 if data.get("sourceSessionDate") != "2022-09-30" or data.get("sourceTimezoneAuthenticated") is not False:
     ERRORS.append("Source market-session date and unauthenticated timezone status must be explicit")
+if data.get("sourceSessionClockStart") != "09:00" or data.get("sourceSessionClockTimezoneAuthenticated") is not False:
+    ERRORS.append("Source-session clock start and unauthenticated timezone status must be explicit")
+clock_start_hour, clock_start_minute = (int(part) for part in data.get("sourceSessionClockStart", "00:00").split(":"))
+clock_at_start = f"{clock_start_hour:02d}:{clock_start_minute:02d}"
+clock_end_total = clock_start_hour * 60 + clock_start_minute + candles[-1]["t"]
+clock_at_end = f"{(clock_end_total // 60) % 24:02d}:{clock_end_total % 60:02d}"
+if clock_at_start != "09:00" or clock_at_end != "17:50":
+    ERRORS.append(f"Source-session clock labels must span 09:00 to 17:50; found {clock_at_start} to {clock_at_end}")
 if data.get("privacy", {}).get("sourceSessionDatePublished") is not True:
     ERRORS.append("Public privacy metadata must record the authorized date disclosure")
 if outcome.get("resultBasis") != "unrounded arithmetic from adjusted-price research-model fills; not exchange-executable P&L":
@@ -89,12 +97,14 @@ if "off WIN's 5-point tick grid" not in HTML_PATH.read_text(encoding="utf-8"):
 html = HTML_PATH.read_text(encoding="utf-8")
 if '<time datetime="2022-09-30">30 Sep 2022</time>' not in html or "source clock timezone is unverified" not in html.lower():
     ERRORS.append("The visible source date must be accompanied by its timezone qualification")
+if "Source-session clock · timezone unverified" not in html or "displayed source-session clock runs from 09:00 to 17:50" not in html:
+    ERRORS.append("The chart must identify its qualified source-session clock convention")
 if "Simulated position" not in html or "Live position" in html:
     ERRORS.append("The replay must not describe a historical simulation as a live position")
 if any(key in data for key in ("grossBRL", "netBRL", "exitPrice", "sourceDate", "sourceTimestamps")):
     ERRORS.append("Final outcome data must remain separate from the initial candle payload")
 combined = json.dumps(data) + json.dumps(outcome)
-combined = combined.replace("2022-09-30", "")
+combined = combined.replace("2022-09-30", "").replace("09:00", "").replace("17:50", "")
 if re.search(r"\b(?:202[0-9]-[01][0-9]-[0-3][0-9]|\d{2}:\d{2}|ZZP-FLAG|H36AAA|P1_ENTRY_CUTOFF|PB1)\b", combined):
     ERRORS.append("Public replay contains a source date, clock time, internal ID, variant, or strategy label")
 if "pyramiding-win-session.json" not in SCRIPT_PATH.read_text(encoding="utf-8"):

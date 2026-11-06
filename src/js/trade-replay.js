@@ -14,7 +14,11 @@ if (root) {
   let priceLines = [], current = -1, follow = true, programmaticRange = false;
   const byId = (id) => document.getElementById(id);
   const text = (id, value) => { byId(id).textContent = value; };
-  const elapsed = (minute) => `+${String(Math.floor(minute / 60)).padStart(2, "0")}h ${String(minute % 60).padStart(2, "0")}m`;
+  const sourceClock = (minute) => {
+    const [startHour, startMinute] = data.sourceSessionClockStart.split(":").map(Number);
+    const total = (startHour * 60 + startMinute + minute) % (24 * 60);
+    return `${String(Math.floor(total / 60)).padStart(2, "0")}:${String(total % 60).padStart(2, "0")}`;
+  };
   const fmtMoney = (value) => currency.format(value).replace(/\u00a0/g, " ");
   const setEnabled = (enabled) => root.querySelectorAll("button,input,select").forEach((node) => { node.disabled = !enabled; });
   const stop = () => { if (timer) { clearTimeout(timer); timer = null; } };
@@ -35,10 +39,10 @@ if (root) {
       grid: { vertLines: { color: "#1c2b3a" }, horzLines: { color: "#1c2b3a" } },
       crosshair: { mode: lib.CrosshairMode.Normal, vertLine: { color: "#71879a", style: lib.LineStyle.Dashed, labelBackgroundColor: "#24394d" }, horzLine: { color: "#71879a", style: lib.LineStyle.Dashed, labelBackgroundColor: "#24394d" } },
       rightPriceScale: { borderColor: "#33485b", autoScale: true, scaleMargins: { top: 0.14, bottom: 0.16 }, minimumWidth: 72 },
-      timeScale: { borderColor: "#33485b", timeVisible: true, secondsVisible: false, rightOffset: 4, barSpacing: 9, minBarSpacing: 3, lockVisibleTimeRangeOnResize: true, tickMarkFormatter: (time) => elapsed(Number(time) / 60) },
+      timeScale: { borderColor: "#33485b", timeVisible: true, secondsVisible: false, rightOffset: 4, barSpacing: 9, minBarSpacing: 3, lockVisibleTimeRangeOnResize: true, tickMarkFormatter: (time) => sourceClock(Number(time) / 60) },
       handleScroll: { mouseWheel: true, pressedMouseMove: true, horzTouchDrag: true, vertTouchDrag: false },
       handleScale: { mouseWheel: true, pinch: true, axisPressedMouseMove: true, axisDoubleClickReset: true },
-      localization: { locale: "en-GB", timeFormatter: (time) => elapsed(Number(time) / 60) },
+      localization: { locale: "en-GB", timeFormatter: (time) => sourceClock(Number(time) / 60) },
     });
     series = chart.addSeries(lib.CandlestickSeries, {
       upColor: "#38c9a0", downColor: "#ff7585", borderUpColor: "#38c9a0", borderDownColor: "#ff7585", wickUpColor: "#38c9a0", wickDownColor: "#ff7585", priceLineVisible: false, lastValueVisible: true,
@@ -56,7 +60,7 @@ if (root) {
       const candle = event?.seriesData?.get(series);
       const ix = event?.time === undefined ? -1 : Math.round(Number(event.time) / 300);
       if (!candle || ix < 0 || ix > current) { hover.hidden = true; return; }
-      hover.textContent = `${elapsed(data.candles[ix].t)} · O ${number.format(candle.open)} · H ${number.format(candle.high)} · L ${number.format(candle.low)} · C ${number.format(candle.close)}`;
+      hover.textContent = `${sourceClock(data.candles[ix].t)} · O ${number.format(candle.open)} · H ${number.format(candle.high)} · L ${number.format(candle.low)} · C ${number.format(candle.close)}`;
       hover.hidden = false;
     });
     chart.timeScale().subscribeVisibleLogicalRangeChange((range) => {
@@ -112,9 +116,9 @@ if (root) {
       text("replay-final-gross", fmtMoney(outcome.grossBRL)); text("replay-final-cost", `−${fmtMoney(outcome.costBRL)}`); text("replay-final-net", fmtMoney(outcome.netBRL));
       text("replay-postexit-note", current >= data.indices.postExitCheckpoint ? `${current - outcome.exitIndex} post-exit candles are visible. Position remains flat; realized P&L is unchanged.` : "The position is closed. Continue playback to review later bars; realized P&L remains fixed.");
     }
-    const candle = data.candles[current]; text("replay-progress-text", `Candle ${current + 1} of ${data.candles.length} · Session ${elapsed(candle.t)}`);
+    const candle = data.candles[current]; text("replay-progress-text", `Candle ${current + 1} of ${data.candles.length} · Source-session clock ${sourceClock(candle.t)}`);
     text("replay-chart-state", `Showing ${current + 1} of ${data.candles.length} verified M5 candles`); slider.value = String(current);
-    host.setAttribute("aria-label", `Interactive WIN M5 historical chart through session ${elapsed(candle.t)}. ${current + 1} of ${data.candles.length} candles are visible; later candles are withheld. Current candle OHLC: open ${number.format(candle.o)}, high ${number.format(candle.h)}, low ${number.format(candle.l)}, close ${number.format(candle.c)}.`);
+    host.setAttribute("aria-label", `Interactive WIN M5 historical chart through source-session clock ${sourceClock(candle.t)}; source timezone is unverified. ${current + 1} of ${data.candles.length} candles are visible; later candles are withheld. Current candle OHLC: open ${number.format(candle.o)}, high ${number.format(candle.h)}, low ${number.format(candle.l)}, close ${number.format(candle.c)}.`);
     byId("trade-replay").querySelector('[data-replay-action="fit-session"]').disabled = current !== data.candles.length - 1;
     status.textContent = closed ? `${current >= data.indices.postExitCheckpoint ? "Post-exit context" : "Position closed"}. Flat. Adjusted-price model net ${fmtMoney(outcome.netBRL)} under the S2 research scenario; not exchange-executable P&L. Candle ${current + 1} of ${data.candles.length}.` : s.quantity ? `Position open: ${s.quantity} WIN contract${s.quantity === 1 ? "" : "s"}. Current adjusted-price model gross mark ${fmtMoney(s.openGrossBRL)}. Candle ${current + 1} of ${data.candles.length}.` : `Flat. No position is open. Candle ${current + 1} of ${data.candles.length}.`;
   }

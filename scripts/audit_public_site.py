@@ -26,8 +26,10 @@ if b'project-vortex-bi-showcase' not in (R/'src/index.html').read_bytes():errors
 if b'14-page' not in (R/'dist/index.html').read_bytes():errors.append('Built page does not describe the 14-page public PBIP')
 market=json.loads((R/'public/data/replay/pyramiding-win-session.json').read_text(encoding='utf-8'))
 if market.get('sourceSessionDate')!='2022-09-30' or market.get('sourceTimezoneAuthenticated') is not False:errors.append('Replay date provenance or timezone qualification is missing')
+if market.get('sourceSessionClockStart')!='09:00' or market.get('sourceSessionClockTimezoneAuthenticated') is not False or market.get('candles', [{}])[-1].get('t')!=530:errors.append('Qualified source-session clock labels must span 09:00 to 17:50')
 built_html=(R/'dist/index.html').read_text(encoding='utf-8')
 if '30 Sep 2022' not in built_html or 'source clock timezone is unverified' not in built_html.lower():errors.append('Visible replay date disclosure is missing or unqualified')
+if 'Source-session clock · timezone unverified' not in built_html or '09:00 to 17:50' not in built_html:errors.append('Visible source-session clock qualification is missing')
 if any(k in market for k in ('entry1SourceEpoch','entry2SourceEpoch','sourceSessionStartUTC','sourceSessionEndUTC')):errors.append('Exact source timestamps must remain private')
 screens=list((R/'public/images/powerbi').glob('[0-9][0-9]-*.png'))
 payload={'reviewed':date.today().isoformat(),'scope':'website source, generated dist, public aggregate data, chart images, Power BI screenshots and documentation','file_count':len(files),'gallery_screenshot_count':len(screens),'known_contaminated_blob':'a8eca13931878c6b686c30f3b4890e0398d977ce','errors':errors,'files':[{'path':p.relative_to(R).as_posix(),'sha256':hashlib.sha256(p.read_bytes()).hexdigest(),'bytes':p.stat().st_size} for p in sorted(files)]}
