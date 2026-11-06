@@ -32,6 +32,8 @@ jobs:
         run: npm run build
       - name: Audit public files
         run: python3 scripts/audit_public_site.py
+      - name: Verify the file manifest reproduces on Linux
+        run: git diff --exit-code -- docs/public-file-manifest.json
       - name: Run static-site regression checks
         run: python3 scripts/test_static_site.py
       - name: Upload dist artifact

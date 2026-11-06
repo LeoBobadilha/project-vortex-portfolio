@@ -1,10 +1,15 @@
 ﻿from __future__ import annotations
 import csv,hashlib,json,re
-from datetime import date
 from pathlib import Path
 R=Path(__file__).resolve().parents[1]
 manifest=R/'docs/public-file-manifest.json'
-files=[p for p in R.rglob('*') if p.is_file() and '.git' not in p.parts and p.name!='public-file-manifest.json']
+REVIEW_DATE='2026-11-06'
+BINARY={'.png','.jpg','.jpeg','.gif','.webp','.ico','.pdf','.woff','.woff2','.ttf'}
+def canonical(p):
+ # Hash what Git stores: LF for text, exact bytes for binaries, on every operating system.
+ raw=p.read_bytes()
+ return raw if p.suffix.lower() in BINARY or b'\0' in raw else raw.replace(b'\r\n',b'\n')
+files=sorted((p for p in R.rglob('*') if p.is_file() and not {'.git','node_modules','__pycache__'}&set(p.parts) and p.name!='public-file-manifest.json'),key=lambda p:p.relative_to(R).as_posix())
 errors=[]
 patterns=[r'(?i)C:\\Projects\\Project-robot-trader',r'(?i)D:\\Robot',r'(?i)file:///',r'(?i)ZZP_TRIANGLE',r'(?i)CATCH-LONG',r'(?i)H36AAH_RECT',r'(?i)AAF_DESC',r'(?i)account.?number',r'(?i)broker.?login',r'(?i)password\s*[:=]',r'(?i)api[_ -]?key\s*[:=]',r'(?i)secret\s*[:=]']
 for p in files:
@@ -17,7 +22,7 @@ for p in files:
  if p.suffix.lower()=='.csv':
   with p.open(encoding='utf-8-sig',newline='') as f:headers=next(csv.reader(f),[])
   if {'TradeID','OpportunityID','EntryPrice','StopPrice','TargetPrice','ExitPrice','SignalTimeUTC','EntryTimeUTC','ExitTimeUTC'} & set(headers):errors.append(f'Trade-level CSV fields in {p.relative_to(R)}')
-for req in ['README.md','src/index.html','dist/index.html','docs/security-review.md','public/data/benchmark_summary.csv','public/data/annual_portfolio_results.csv','public/data/monthly_portfolio_results.csv','public/images/powerbi/executive-overview.png']:
+for req in ['README.md','src/index.html','dist/index.html','docs/security-review.md','public/data/benchmark_summary.csv','public/data/annual_portfolio_results.csv','public/data/monthly_portfolio_results.csv','public/images/powerbi/03-Executive.png']:
  if not (R/req).exists():errors.append('Missing '+req)
 for image in [p for folder in (R/'public/images/powerbi',R/'dist/images/powerbi') if folder.exists() for p in folder.glob('*.png')]:
  raw=image.read_bytes(); oid=hashlib.sha1(b'blob '+str(len(raw)).encode()+b'\0'+raw).hexdigest()
@@ -32,7 +37,7 @@ if '30 Sep 2022' not in built_html or 'source clock timezone is unverified' not 
 if 'Source-session clock · timezone unverified' not in built_html or '09:00 to 17:50' not in built_html:errors.append('Visible source-session clock qualification is missing')
 if any(k in market for k in ('entry1SourceEpoch','entry2SourceEpoch','sourceSessionStartUTC','sourceSessionEndUTC')):errors.append('Exact source timestamps must remain private')
 screens=list((R/'public/images/powerbi').glob('[0-9][0-9]-*.png'))
-payload={'reviewed':date.today().isoformat(),'scope':'website source, generated dist, public aggregate data, chart images, Power BI screenshots and documentation','file_count':len(files),'gallery_screenshot_count':len(screens),'known_contaminated_blob':'a8eca13931878c6b686c30f3b4890e0398d977ce','errors':errors,'files':[{'path':p.relative_to(R).as_posix(),'sha256':hashlib.sha256(p.read_bytes()).hexdigest(),'bytes':p.stat().st_size} for p in sorted(files)]}
-manifest.write_text(json.dumps(payload,indent=2)+'\n',encoding='utf-8')
+payload={'reviewed':REVIEW_DATE,'scope':'website source, generated dist, public aggregate data, chart images, Power BI screenshots and documentation','file_count':len(files),'gallery_screenshot_count':len(screens),'known_contaminated_blob':'a8eca13931878c6b686c30f3b4890e0398d977ce','errors':errors,'files':[{'path':p.relative_to(R).as_posix(),'sha256':hashlib.sha256(canonical(p)).hexdigest(),'bytes':len(canonical(p))} for p in files]}
+manifest.write_bytes((json.dumps(payload,indent=2)+'\n').encode('utf-8'))
 print(json.dumps({k:v for k,v in payload.items() if k!='files'},indent=2))
 if errors:raise SystemExit(1)

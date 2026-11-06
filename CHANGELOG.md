@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Refreshed all 14 Power BI images after the report correction: P6 and PSC are never combined, page 05 is PSC only, and the case pages are now 16:9 with their caveat fully visible.
+- The Executive Overview preview now uses the current page 03 image; the separate older file is removed.
+- The file manifest now hashes canonical LF text and exact image bytes, and CI checks that it reproduces on Linux.
 - Added the verified source market session date (30 September 2022) with an explicit timezone qualification; documented the resulting OHLC correlation risk. Clarified that the case-study examples are historical and the replay position is simulated.
 - Added a prominent WIN tick-grid qualification to the 1+1 replay: the 20-cent remainder comes from exact arithmetic on off-grid adjusted-price model fills; no fills were rounded, and the displayed BRL outcome is not exchange-executable performance.
 

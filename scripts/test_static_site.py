@@ -101,8 +101,10 @@ else:
         errors.append(f"Power BI screenshot dimensions differ: {sorted(dimensions)}")
     if "14 Power BI report pages — 14 verified screenshots" not in html:
         errors.append("Gallery does not state that all 14 report pages have verified screenshots")
-    if "Pages 04 and 05 are shown with the P6+SIZE+CE (PSC) portfolio selected" not in html:
-        errors.append("Gallery does not disclose the PSC slicer state used for pages 04 and 05")
+    if "Page 04 compares P6 and PSC as separate series, and page 05 is PSC only" not in html:
+        errors.append("Gallery does not disclose how pages 04 and 05 scope the portfolios")
+    if 'src="images/powerbi/03-Executive.png" alt="Genuine' not in html or "executive-overview" in html:
+        errors.append("Executive Overview preview must use the current page 03 capture")
     if "Past performance, including historical backtests and simulated trading results" not in html:
         errors.append("Historical-performance disclosure is missing")
 
