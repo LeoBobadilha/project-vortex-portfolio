@@ -1,5 +1,6 @@
 ﻿from __future__ import annotations
 import csv,hashlib,json,re
+from datetime import date
 from pathlib import Path
 R=Path(__file__).resolve().parents[1]
 manifest=R/'docs/public-file-manifest.json'
@@ -18,10 +19,18 @@ for p in files:
   if {'TradeID','OpportunityID','EntryPrice','StopPrice','TargetPrice','ExitPrice','SignalTimeUTC','EntryTimeUTC','ExitTimeUTC'} & set(headers):errors.append(f'Trade-level CSV fields in {p.relative_to(R)}')
 for req in ['README.md','src/index.html','dist/index.html','docs/security-review.md','public/data/benchmark_summary.csv','public/data/annual_portfolio_results.csv','public/data/monthly_portfolio_results.csv','public/images/powerbi/executive-overview.png']:
  if not (R/req).exists():errors.append('Missing '+req)
-if (R/'public/images/powerbi/report-gallery.png').exists() or (R/'dist/images/powerbi/report-gallery.png').exists():errors.append('Zoom-contaminated full-page gallery must remain withheld')
+for image in [p for folder in (R/'public/images/powerbi',R/'dist/images/powerbi') if folder.exists() for p in folder.glob('*.png')]:
+ raw=image.read_bytes(); oid=hashlib.sha1(b'blob '+str(len(raw)).encode()+b'\0'+raw).hexdigest()
+ if oid=='a8eca13931878c6b686c30f3b4890e0398d977ce':errors.append(f'Known contaminated screenshot blob present: {image.relative_to(R)}')
 if b'project-vortex-bi-showcase' not in (R/'src/index.html').read_bytes():errors.append('Website does not identify the companion BI repository')
 if b'14-page' not in (R/'dist/index.html').read_bytes():errors.append('Built page does not describe the 14-page public PBIP')
-payload={'reviewed':'2026-11-05','scope':'website source, generated dist, public aggregate data, chart images, Power BI screenshots and documentation','file_count':len(files),'errors':errors,'files':[{'path':p.relative_to(R).as_posix(),'sha256':hashlib.sha256(p.read_bytes()).hexdigest(),'bytes':p.stat().st_size} for p in sorted(files)]}
+market=json.loads((R/'public/data/replay/pyramiding-win-session.json').read_text(encoding='utf-8'))
+if market.get('sourceSessionDate')!='2022-09-30' or market.get('sourceTimezoneAuthenticated') is not False:errors.append('Replay date provenance or timezone qualification is missing')
+built_html=(R/'dist/index.html').read_text(encoding='utf-8')
+if '30 Sep 2022' not in built_html or 'source clock timezone is unverified' not in built_html.lower():errors.append('Visible replay date disclosure is missing or unqualified')
+if any(k in market for k in ('entry1SourceEpoch','entry2SourceEpoch','sourceSessionStartUTC','sourceSessionEndUTC')):errors.append('Exact source timestamps must remain private')
+screens=list((R/'public/images/powerbi').glob('[0-9][0-9]-*.png'))
+payload={'reviewed':date.today().isoformat(),'scope':'website source, generated dist, public aggregate data, chart images, Power BI screenshots and documentation','file_count':len(files),'gallery_screenshot_count':len(screens),'known_contaminated_blob':'a8eca13931878c6b686c30f3b4890e0398d977ce','errors':errors,'files':[{'path':p.relative_to(R).as_posix(),'sha256':hashlib.sha256(p.read_bytes()).hexdigest(),'bytes':p.stat().st_size} for p in sorted(files)]}
 manifest.write_text(json.dumps(payload,indent=2)+'\n',encoding='utf-8')
 print(json.dumps({k:v for k,v in payload.items() if k!='files'},indent=2))
 if errors:raise SystemExit(1)

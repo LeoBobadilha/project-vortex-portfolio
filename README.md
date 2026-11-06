@@ -5,7 +5,7 @@
 
 Project Vortex examines whether discretionary Price Action concepts can be formalized and tested systematically. AI agents supported research, implementation and analysis across historical experiments; I set the research direction, contributed market context and reviewed the evidence.
 
-The static portfolio is published at [leobobadilha.github.io/project-vortex-portfolio](https://leobobadilha.github.io/project-vortex-portfolio/). It uses semantic HTML, custom CSS, browser-native JavaScript and SVG charts. It has no backend, trading API, broker connection or live market feed.
+The static portfolio is published at [leobobadilha.github.io/project-vortex-portfolio](https://leobobadilha.github.io/project-vortex-portfolio/). It uses semantic HTML, custom CSS, browser-native JavaScript, SVG portfolio charts and a locally bundled Lightweight Charts engine for the historical replay. It has no backend, trading API, broker connection or live market feed.
 
 ## Historical benchmark
 
@@ -17,7 +17,7 @@ The monthly cumulative chart is a running sum of monthly aggregates, not account
 
 The companion [Project Vortex BI showcase](https://github.com/LeoBobadilha/project-vortex-bi-showcase) contains the public-safe 14-page PBIP. The website gallery currently shows six verified clean Desktop captures: pages 01-03 and 12-14. Pages 04-11 remain part of the PBIP but are withheld until genuine clean recaptures are available. The gallery does not represent the full report.
 
-The case-study area includes an interactive replay from a separate exploratory WIN scaling backtest. Its event ledger records a one-contract long, a pullback, a separately recorded one-contract add-on, and a shared model exit. The selected session contains all 107 available M5 bars, including 39 after the modeled exit. The source is continuous-adjusted PRICE_ONLY OHLC: Entry 2 and exit are off WIN's 5-point tick grid, so the displayed R$750.20 gross and R$738.20 after the study's S2 assumptions are unrounded research-model arithmetic, not exchange-executable performance or account P&L. We did not snap fills to the grid because no verified unadjusted contract quotes are available for a valid rerun. S2 is not C30. See [Trade Replay Methodology](docs/trade-replay-methodology.md).
+The case-study area includes an interactive replay from a separate exploratory WIN scaling backtest. Its source market session date is 30 September 2022, cross-checked against the frozen two-leg ledger and corresponding 107-bar M5 source session. The source clock timezone is unverified, and the date is not a certified B3 local timestamp. The event ledger records a one-contract long, a pullback, a separately recorded one-contract add-on and a shared model exit. Entry 2 and exit are off WIN's five-point tick grid in continuous-adjusted PRICE_ONLY OHLC, so R$750.20 gross and R$738.20 after the study's S2 assumption are unrounded research-model arithmetic, not executable performance or account P&L. No fills were snapped because verified unadjusted contract quotes are unavailable. Publishing the date with recognizable candle geometry increases external correlation risk. S2 is not C30. See [Trade Replay Methodology](docs/trade-replay-methodology.md).
 
 ## Data and local preview
 

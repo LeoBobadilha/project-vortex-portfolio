@@ -22,6 +22,10 @@
 .replay-heading { display:flex; justify-content:space-between; align-items:flex-start; gap:28px; margin-bottom:25px; }
 .replay-heading h3 { max-width:780px; margin:0; color:var(--rp-text); font-size:clamp(30px,3.6vw,44px); line-height:1.1; letter-spacing:-.035em; }
 .replay-lede { max-width:780px; margin:12px 0 0; color:var(--rp-muted); font-size:16px; line-height:1.65; }
+.replay-session-meta { display:grid; grid-template-columns:auto auto; justify-content:start; align-items:baseline; gap:4px 10px; margin:14px 0 0; color:var(--rp-label); font-size:13px; line-height:1.5; }
+.replay-session-meta strong { color:#f0f6fc; font-size:13px; }
+.replay-session-meta time { color:#9be7f2; font-weight:750; font-variant-numeric:tabular-nums; }
+.replay-session-meta span { grid-column:1/-1; color:var(--rp-muted); }
 .replay-execution-basis { display:grid; grid-template-columns:minmax(205px, .8fr) minmax(0, 2fr); gap:14px; align-items:start; margin:0 0 18px; padding:14px 16px; border:1px solid #b77c3b; border-left:4px solid #f1c66b; border-radius:5px; color:#f0f6fc; background:#342a20; }
 .replay-execution-basis strong { color:#ffe2a6; font-size:15px; line-height:1.45; }
 .replay-execution-basis span { color:#f0e5d6; font-size:14px; line-height:1.55; }
@@ -88,6 +92,8 @@
 @media (max-width:1120px) { .replay-layout { grid-template-columns:minmax(0,1fr) 285px; gap:13px; } .replay-control-row { gap:6px; } .replay-control-row button { padding-inline:9px; } }
 @media (max-width:860px) { .replay-heading { display:block; } .replay-badges { justify-content:flex-start; max-width:none; margin-top:15px; } .replay-layout { grid-template-columns:1fr; } .replay-side { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); align-items:start; } .replay-outcome { grid-column:1/-1; } }
 @media (max-width:600px) {
+  .replay-session-meta { font-size:12px; }
+  .replay-session-meta strong { font-size:12px; }
   .replay-execution-basis { grid-template-columns:1fr; gap:5px; }
   .trade-replay { margin:42px 0 52px; padding:17px 12px; }
   .replay-heading h3 { font-size:30px; }

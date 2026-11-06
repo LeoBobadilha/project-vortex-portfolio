@@ -36,6 +36,10 @@ if outcome["exitQuantity"] != 2 or outcome["exitIndex"] != indices["exit"]:
     ERRORS.append("The exit must close the complete two-contract position at the audited event")
 if data.get("tickSizePoints") != 5 or data.get("exchangeExecutablePricesVerified") is not False:
     ERRORS.append("WIN tick size and non-executable adjusted-price classification must be explicit")
+if data.get("sourceSessionDate") != "2022-09-30" or data.get("sourceTimezoneAuthenticated") is not False:
+    ERRORS.append("Source market-session date and unauthenticated timezone status must be explicit")
+if data.get("privacy", {}).get("sourceSessionDatePublished") is not True:
+    ERRORS.append("Public privacy metadata must record the authorized date disclosure")
 if outcome.get("resultBasis") != "unrounded arithmetic from adjusted-price research-model fills; not exchange-executable P&L":
     ERRORS.append("BRL result must be identified as adjusted-price model arithmetic, not executable P&L")
 if outcome.get("tickGridAssessment", {}).get("exchangeExecutablePricesVerified") is not False:
@@ -82,9 +86,15 @@ if expected_cost != outcome["costBRL"] or outcome["costScenario"] != "S2 researc
     ERRORS.append("S2 costs must be applied once per contract and must not be labelled C30")
 if "off WIN's 5-point tick grid" not in HTML_PATH.read_text(encoding="utf-8"):
     ERRORS.append("The non-executable tick-grid limitation must be prominent in the replay UI")
+html = HTML_PATH.read_text(encoding="utf-8")
+if '<time datetime="2022-09-30">30 Sep 2022</time>' not in html or "source clock timezone is unverified" not in html.lower():
+    ERRORS.append("The visible source date must be accompanied by its timezone qualification")
+if "Simulated position" not in html or "Live position" in html:
+    ERRORS.append("The replay must not describe a historical simulation as a live position")
 if any(key in data for key in ("grossBRL", "netBRL", "exitPrice", "sourceDate", "sourceTimestamps")):
     ERRORS.append("Final outcome data must remain separate from the initial candle payload")
 combined = json.dumps(data) + json.dumps(outcome)
+combined = combined.replace("2022-09-30", "")
 if re.search(r"\b(?:202[0-9]-[01][0-9]-[0-3][0-9]|\d{2}:\d{2}|ZZP-FLAG|H36AAA|P1_ENTRY_CUTOFF|PB1)\b", combined):
     ERRORS.append("Public replay contains a source date, clock time, internal ID, variant, or strategy label")
 if "pyramiding-win-session.json" not in SCRIPT_PATH.read_text(encoding="utf-8"):

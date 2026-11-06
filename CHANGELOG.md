@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Added the verified source market session date (30 September 2022) with an explicit timezone qualification; documented the resulting OHLC correlation risk. Clarified that the case-study examples are historical and the replay position is simulated.
 - Added a prominent WIN tick-grid qualification to the 1+1 replay: the 20-cent remainder comes from exact arithmetic on off-grid adjusted-price model fills; no fills were rounded, and the displayed BRL outcome is not exchange-executable performance.
 
 - Replaced the fixed two-contract PSC replay with a separate, event-ledger-backed one-plus-one WIN scaling study. The new replay covers the available 107-bar session, shows 39 candles after exit, and reports its distinct S2 research cost scenario without mixing it with PSC C30 metrics.

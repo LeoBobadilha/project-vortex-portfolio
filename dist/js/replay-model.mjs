@@ -28,6 +28,7 @@ export function positionStateAt(data, index, outcome = null) {
 export function validateReplay(data, outcome) {
   const errors = [];
   const { candles, events, indices } = data;
+  if (data.sourceSessionDate !== "2022-09-30" || data.sourceTimezoneAuthenticated !== false) errors.push("Source session date and timezone qualification must be explicit");
   if (!Array.isArray(candles) || candles.length !== 107) errors.push("Expected all 107 session candles");
   if (data.tickSizePoints !== 5 || data.exchangeExecutablePricesVerified !== false) errors.push("WIN tick size and adjusted-price non-executable status must be explicit");
   if (indices.entry1 !== 31 || indices.pullback !== 33 || indices.entry2 !== 34 || indices.exit !== 67) errors.push("Event indexes do not match the verified session sequence");

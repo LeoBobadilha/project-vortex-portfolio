@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import csv
 import re
+import struct
 from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import urlsplit
@@ -17,6 +18,7 @@ class Links(HTMLParser):
         self.ids: set[str] = set()
         self.hrefs: list[str] = []
         self.srcs: list[str] = []
+        self.pbi_images: list[str] = []
 
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
         values = dict(attrs)
@@ -26,6 +28,8 @@ class Links(HTMLParser):
             self.hrefs.append(values["href"] or "")
         if values.get("src"):
             self.srcs.append(values["src"] or "")
+        if values.get("data-pbi-image"):
+            self.pbi_images.append(values["data-pbi-image"] or "")
 
 
 html_path = DIST / "index.html"
@@ -60,16 +64,32 @@ else:
             target = (css.parent / parts.path).resolve()
             if not target.is_relative_to(DIST.resolve()) or not target.exists():
                 errors.append(f"Broken CSS asset in {css.name}: {raw}")
-    if "report-gallery.png" in html:
-        errors.append("Withheld Power BI contact sheet is still referenced by the page")
+    expected_current = {"01-Knowledge.png", "02-Research.png", "03-Executive.png", "12-W06-Win.png", "13-L01-Loss.png", "14-L02-Loss.png"}
+    expected_full = expected_current | {"04-Performance.png", "05-Risk.png", "06-Trade-Explorer.png", "07-Validation.png", "08-W02-Win.png", "09-W03-Win.png", "10-W04-Win.png", "11-W05-Win.png"}
+    image_dir = DIST / "images" / "powerbi"
+    actual_images = {p.name for p in image_dir.glob("[0-9][0-9]-*.png")}
+    if actual_images not in (expected_current, expected_full):
+        errors.append(f"Power BI gallery assets must be the reviewed six-image set or complete 14-image set; found {sorted(actual_images)}")
     gallery_count = html.count('class="pbi-thumb"')
-    if gallery_count != 6:
-        errors.append(f"Expected six verified Power BI gallery captures, found {gallery_count}")
-    if "Pages 04–11 remain part of the PBIP but are not shown here" not in html:
-        errors.append("Gallery does not disclose that pages 04-11 are withheld pending genuine recaptures")
-    for page in ("04-Performance", "05-Risk", "06-Trade-Explorer", "07-Validation", "08-W02-Win", "09-W03-Win", "10-W04-Win", "11-W05-Win"):
-        if page in html:
-            errors.append(f"Missing/withheld Power BI screenshot is referenced: {page}")
+    linked_images = {Path(name).name for name in parser.pbi_images}
+    if gallery_count != len(actual_images) or linked_images != actual_images:
+        errors.append(f"Gallery links/count do not match available approved PNGs: {gallery_count} buttons, {len(linked_images)} links, {len(actual_images)} files")
+    dimensions = set()
+    for name in actual_images:
+        path = image_dir / name
+        raw = path.read_bytes()
+        if len(raw) < 24 or raw[:8] != b"\x89PNG\r\n\x1a\n" or raw[12:16] != b"IHDR":
+            errors.append(f"Power BI gallery image is not a decodable PNG header: {name}")
+        else:
+            dimensions.add(struct.unpack(">II", raw[16:24]))
+    if len(dimensions) > 1:
+        errors.append(f"Power BI screenshot dimensions differ: {sorted(dimensions)}")
+    if actual_images == expected_full:
+        if "14 Power BI report pages — 14 verified screenshots" not in html:
+            errors.append("Full gallery does not state that all 14 report pages have verified screenshots")
+    else:
+        if "six approved captures available today" not in html or "Pages 04–11 remain part of the PBIP but are not shown here" not in html:
+            errors.append("Partial gallery must clearly disclose its six-image coverage and withheld pages")
     if "Past performance, including historical backtests and simulated trading results" not in html:
         errors.append("Historical-performance disclosure is missing")
 
@@ -85,9 +105,6 @@ for name in ("benchmark_summary.csv", "annual_portfolio_results.csv", "monthly_p
             errors.append(f"CSV has no data rows: {name}")
         if {"TradeID", "OpportunityID", "EntryPrice", "ExitPrice", "SignalTimeUTC"} & set(headers):
             errors.append(f"Trade-level fields found in public CSV: {name}")
-
-if (DIST / "images/powerbi/report-gallery.png").exists():
-    errors.append("Zoom-contaminated Power BI gallery was copied to dist")
 
 print(f"Static-site smoke test: {len(errors)} error(s)")
 for error in errors:
