@@ -64,16 +64,31 @@ else:
             target = (css.parent / parts.path).resolve()
             if not target.is_relative_to(DIST.resolve()) or not target.exists():
                 errors.append(f"Broken CSS asset in {css.name}: {raw}")
-    expected_current = {"01-Knowledge.png", "02-Research.png", "03-Executive.png", "12-W06-Win.png", "13-L01-Loss.png", "14-L02-Loss.png"}
-    expected_full = expected_current | {"04-Performance.png", "05-Risk.png", "06-Trade-Explorer.png", "07-Validation.png", "08-W02-Win.png", "09-W03-Win.png", "10-W04-Win.png", "11-W05-Win.png"}
+    expected_full = {
+        "01-Knowledge.png", "02-Research.png", "03-Executive.png", "04-Performance.png", "05-Risk.png",
+        "06-Trade-Explorer.png", "07-Validation.png", "08-W02-Win.png", "09-W03-Win.png", "10-W04-Win.png",
+        "11-W05-Win.png", "12-W06-Win.png", "13-L01-Loss.png", "14-L02-Loss.png",
+    }
     image_dir = DIST / "images" / "powerbi"
     actual_images = {p.name for p in image_dir.glob("[0-9][0-9]-*.png")}
-    if actual_images not in (expected_current, expected_full):
-        errors.append(f"Power BI gallery assets must be the reviewed six-image set or complete 14-image set; found {sorted(actual_images)}")
+    if actual_images != expected_full:
+        errors.append(f"Power BI gallery assets must be the complete 14-image set; found {sorted(actual_images)}")
     gallery_count = html.count('class="pbi-thumb"')
     linked_images = {Path(name).name for name in parser.pbi_images}
     if gallery_count != len(actual_images) or linked_images != actual_images:
         errors.append(f"Gallery links/count do not match available approved PNGs: {gallery_count} buttons, {len(linked_images)} links, {len(actual_images)} files")
+    indexes = [int(value) for value in re.findall(r'data-pbi-index="(\d+)"', html)]
+    if indexes != list(range(14)):
+        errors.append(f"Gallery indexes must run 0-13 in page order; found {indexes}")
+    ordered_images = [Path(name).name for name in parser.pbi_images]
+    if ordered_images != sorted(expected_full):
+        errors.append(f"Gallery images are not in report-page order: {ordered_images}")
+    for control in ("data-pbi-prev", "data-pbi-next", "data-pbi-close", 'id="pbi-dialog-count"', 'id="powerbi-dialog"'):
+        if control not in html:
+            errors.append(f"Gallery lightbox control is missing: {control}")
+    for stale in ("gallery-unavailable", "pbi-missing-note", "six approved captures", "Six of the report"):
+        if stale in html:
+            errors.append(f"Stale partial-gallery text remains: {stale}")
     dimensions = set()
     for name in actual_images:
         path = image_dir / name
@@ -84,12 +99,10 @@ else:
             dimensions.add(struct.unpack(">II", raw[16:24]))
     if len(dimensions) > 1:
         errors.append(f"Power BI screenshot dimensions differ: {sorted(dimensions)}")
-    if actual_images == expected_full:
-        if "14 Power BI report pages — 14 verified screenshots" not in html:
-            errors.append("Full gallery does not state that all 14 report pages have verified screenshots")
-    else:
-        if "six approved captures available today" not in html or "Pages 04–11 remain part of the PBIP but are not shown here" not in html:
-            errors.append("Partial gallery must clearly disclose its six-image coverage and withheld pages")
+    if "14 Power BI report pages — 14 verified screenshots" not in html:
+        errors.append("Gallery does not state that all 14 report pages have verified screenshots")
+    if "Pages 04 and 05 are shown with the P6+SIZE+CE (PSC) portfolio selected" not in html:
+        errors.append("Gallery does not disclose the PSC slicer state used for pages 04 and 05")
     if "Past performance, including historical backtests and simulated trading results" not in html:
         errors.append("Historical-performance disclosure is missing")
 

@@ -1,8 +1,8 @@
 {
   "reviewed": "2026-11-06",
   "scope": "website source, generated dist, public aggregate data, chart images, Power BI screenshots and documentation",
-  "file_count": 88,
-  "gallery_screenshot_count": 6,
+  "file_count": 104,
+  "gallery_screenshot_count": 14,
   "known_contaminated_blob": "a8eca13931878c6b686c30f3b4890e0398d977ce",
   "errors": [],
   "files": [
@@ -23,8 +23,8 @@
     },
     {
       "path": "CHANGELOG.md",
-      "sha256": "648753a15fe207c04dd20b2ed5a9c7180bd0982f582f90660910c9402ab0ad1d",
-      "bytes": 1949
+      "sha256": "b68ba6b1af570099c01c2267d14354ce4b445469e803e73560426518627cc159",
+      "bytes": 2038
     },
     {
       "path": "dist/css/replay.css",
@@ -33,8 +33,8 @@
     },
     {
       "path": "dist/css/site.css",
-      "sha256": "91856508ea371ae56bb642df53f5f79d09552799aa18490f5717708b76b06f65",
-      "bytes": 31172
+      "sha256": "9f3d85295465c1b0820b85e9175dabd1361491000cfd4611e8a17c858fd22e7c",
+      "bytes": 31017
     },
     {
       "path": "dist/data/annual_portfolio_results.csv",
@@ -118,33 +118,73 @@
     },
     {
       "path": "dist/images/powerbi/01-Knowledge.png",
-      "sha256": "9b52d91aa2cd2baa14f0ff502d24a222bece112b7824dc8a5c117fbdf26695e3",
-      "bytes": 262716
+      "sha256": "cb31bc1dfd43397b53dfd5f8fe01fe0eef88467d823c7185b429f3e2e0e06e08",
+      "bytes": 258931
     },
     {
       "path": "dist/images/powerbi/02-Research.png",
-      "sha256": "bcdec29794b747feee23f95661b13d0b997dfe4da7e453f52490aaab66ca1e7c",
-      "bytes": 243661
+      "sha256": "625bb42b482898bcc095d4528eb65a0ad09ab1f197f214ef1025e95e33595055",
+      "bytes": 239755
     },
     {
       "path": "dist/images/powerbi/03-Executive.png",
-      "sha256": "ce41fe81874a8e614a016b7e114659a11e7492c8a25ddd24544be2038cbd3e9a",
-      "bytes": 279899
+      "sha256": "fbc69a88ed1284688c7e7a30785c48ed4524ee9b3be5d168756a55f186d0bff2",
+      "bytes": 281868
+    },
+    {
+      "path": "dist/images/powerbi/04-Performance.png",
+      "sha256": "3650ffe6e0772f5fdc032f06689933eb0ace5e9a41f8c632394d8a577066a731",
+      "bytes": 295540
+    },
+    {
+      "path": "dist/images/powerbi/05-Risk.png",
+      "sha256": "dcc462302aa25e94935492725e54dc298f2b327c63e31d31f4e7ee7f0a5d0b5e",
+      "bytes": 326771
+    },
+    {
+      "path": "dist/images/powerbi/06-Trade-Explorer.png",
+      "sha256": "9b64598c625b0ad380df8fbf9fd893485bd1f69a94e25501fd95da7176d96df6",
+      "bytes": 390982
+    },
+    {
+      "path": "dist/images/powerbi/07-Validation.png",
+      "sha256": "1dc922141d265d3cc9a67eb3215a72ca643905dbd60e9993c0841aa6dc78f794",
+      "bytes": 223866
+    },
+    {
+      "path": "dist/images/powerbi/08-W02-Win.png",
+      "sha256": "33b0a96be82a1710a90cc63ee013f4e84faed1b706320c4f74cd7e18a6ac7ed0",
+      "bytes": 232947
+    },
+    {
+      "path": "dist/images/powerbi/09-W03-Win.png",
+      "sha256": "e4195343f392c2cc8ae68dffbcc88e6c99884cfdd1e6fc4d42e555b90d8e3408",
+      "bytes": 229220
+    },
+    {
+      "path": "dist/images/powerbi/10-W04-Win.png",
+      "sha256": "4ea819a8fa178f66791ec487b01a46f929f0d788629893add699bf76db2c3a4f",
+      "bytes": 234862
+    },
+    {
+      "path": "dist/images/powerbi/11-W05-Win.png",
+      "sha256": "2f29f4acc7890cd7a47393a4fc59b4fef86e5efd707bbedc12d2ca74cc996b5a",
+      "bytes": 234805
     },
     {
       "path": "dist/images/powerbi/12-W06-Win.png",
-      "sha256": "194303c4a67dfde7cfd6d8a74043f75c81911d4c29bf813cda7039d5df7d858e",
-      "bytes": 233083
+      "sha256": "7ce6587b8c9714bcfdd0ed25a26456f62033f8b12e0ab9864b81d751684700e5",
+      "bytes": 235052
     },
     {
       "path": "dist/images/powerbi/13-L01-Loss.png",
-      "sha256": "9b2fdf7d52b4edf2662d6ca1dbec294da760a56da4a05a00057f699d168b0a9c",
-      "bytes": 228923
+      "sha256": "a44237caa2e0f6e16d40a83d56d452e13da36eb04df0c34eff9e1c20e0ca0218",
+      "bytes": 231145
     },
     {
       "path": "dist/images/powerbi/14-L02-Loss.png",
-      "sha256": "6feef2d2e0c676bd432ecca4e8eb4a0c25cee311e329b699a903f7c92f390fa8",
-      "bytes": 229446
+      "sha256": "304153191d457c5b80d7e1058299dea6748eecbd3d4f1b6d12d7ab1919b755ce",
+      "bytes": 232004
     },
     {
       "path": "dist/images/powerbi/executive-overview.png",
@@ -153,8 +193,8 @@
     },
     {
       "path": "dist/index.html",
-      "sha256": "3ed10b3d8d4dc51bcfa908c325425f648cf5a820afe39d0ba0399f1d2c290497",
-      "bytes": 42634
+      "sha256": "cb9cd770ed6935b9a3f454384b98a2b30c51c77c98336d5e0d0a7d4dc1ccb31d",
+      "bytes": 44913
     },
     {
       "path": "dist/js/app.js",
@@ -183,8 +223,8 @@
     },
     {
       "path": "docs/accessibility-and-qa.md",
-      "sha256": "e22337be8d597fc2cf8e1221fb99e08979edd812cd62f287c5e56c1a9de688d4",
-      "bytes": 1352
+      "sha256": "d76adee0da827fe666d8221b27446701bd7e344b7b98f366c6b7c998f5f55eb4",
+      "bytes": 1270
     },
     {
       "path": "docs/architecture.md",
@@ -238,8 +278,8 @@
     },
     {
       "path": "docs/security-review.md",
-      "sha256": "1a02fccfdcded5ae46c12397224929c454b7cc46f7d4e4493398483e24f2ec5c",
-      "bytes": 2179
+      "sha256": "dc4811984d9b3b7f4b1f64a4e475daa748e5081134b5e03cd50c3abf6a431c5b",
+      "bytes": 2291
     },
     {
       "path": "docs/technical-stack.md",
@@ -338,33 +378,73 @@
     },
     {
       "path": "public/images/powerbi/01-Knowledge.png",
-      "sha256": "9b52d91aa2cd2baa14f0ff502d24a222bece112b7824dc8a5c117fbdf26695e3",
-      "bytes": 262716
+      "sha256": "cb31bc1dfd43397b53dfd5f8fe01fe0eef88467d823c7185b429f3e2e0e06e08",
+      "bytes": 258931
     },
     {
       "path": "public/images/powerbi/02-Research.png",
-      "sha256": "bcdec29794b747feee23f95661b13d0b997dfe4da7e453f52490aaab66ca1e7c",
-      "bytes": 243661
+      "sha256": "625bb42b482898bcc095d4528eb65a0ad09ab1f197f214ef1025e95e33595055",
+      "bytes": 239755
     },
     {
       "path": "public/images/powerbi/03-Executive.png",
-      "sha256": "ce41fe81874a8e614a016b7e114659a11e7492c8a25ddd24544be2038cbd3e9a",
-      "bytes": 279899
+      "sha256": "fbc69a88ed1284688c7e7a30785c48ed4524ee9b3be5d168756a55f186d0bff2",
+      "bytes": 281868
+    },
+    {
+      "path": "public/images/powerbi/04-Performance.png",
+      "sha256": "3650ffe6e0772f5fdc032f06689933eb0ace5e9a41f8c632394d8a577066a731",
+      "bytes": 295540
+    },
+    {
+      "path": "public/images/powerbi/05-Risk.png",
+      "sha256": "dcc462302aa25e94935492725e54dc298f2b327c63e31d31f4e7ee7f0a5d0b5e",
+      "bytes": 326771
+    },
+    {
+      "path": "public/images/powerbi/06-Trade-Explorer.png",
+      "sha256": "9b64598c625b0ad380df8fbf9fd893485bd1f69a94e25501fd95da7176d96df6",
+      "bytes": 390982
+    },
+    {
+      "path": "public/images/powerbi/07-Validation.png",
+      "sha256": "1dc922141d265d3cc9a67eb3215a72ca643905dbd60e9993c0841aa6dc78f794",
+      "bytes": 223866
+    },
+    {
+      "path": "public/images/powerbi/08-W02-Win.png",
+      "sha256": "33b0a96be82a1710a90cc63ee013f4e84faed1b706320c4f74cd7e18a6ac7ed0",
+      "bytes": 232947
+    },
+    {
+      "path": "public/images/powerbi/09-W03-Win.png",
+      "sha256": "e4195343f392c2cc8ae68dffbcc88e6c99884cfdd1e6fc4d42e555b90d8e3408",
+      "bytes": 229220
+    },
+    {
+      "path": "public/images/powerbi/10-W04-Win.png",
+      "sha256": "4ea819a8fa178f66791ec487b01a46f929f0d788629893add699bf76db2c3a4f",
+      "bytes": 234862
+    },
+    {
+      "path": "public/images/powerbi/11-W05-Win.png",
+      "sha256": "2f29f4acc7890cd7a47393a4fc59b4fef86e5efd707bbedc12d2ca74cc996b5a",
+      "bytes": 234805
     },
     {
       "path": "public/images/powerbi/12-W06-Win.png",
-      "sha256": "194303c4a67dfde7cfd6d8a74043f75c81911d4c29bf813cda7039d5df7d858e",
-      "bytes": 233083
+      "sha256": "7ce6587b8c9714bcfdd0ed25a26456f62033f8b12e0ab9864b81d751684700e5",
+      "bytes": 235052
     },
     {
       "path": "public/images/powerbi/13-L01-Loss.png",
-      "sha256": "9b2fdf7d52b4edf2662d6ca1dbec294da760a56da4a05a00057f699d168b0a9c",
-      "bytes": 228923
+      "sha256": "a44237caa2e0f6e16d40a83d56d452e13da36eb04df0c34eff9e1c20e0ca0218",
+      "bytes": 231145
     },
     {
       "path": "public/images/powerbi/14-L02-Loss.png",
-      "sha256": "6feef2d2e0c676bd432ecca4e8eb4a0c25cee311e329b699a903f7c92f390fa8",
-      "bytes": 229446
+      "sha256": "304153191d457c5b80d7e1058299dea6748eecbd3d4f1b6d12d7ab1919b755ce",
+      "bytes": 232004
     },
     {
       "path": "public/images/powerbi/executive-overview.png",
@@ -383,8 +463,8 @@
     },
     {
       "path": "README.md",
-      "sha256": "6a4699cce2629996dbc79ce81d30f708451fc16acb320664e1263190b6bcb0c3",
-      "bytes": 5042
+      "sha256": "0b15ffce2c999c712c069005d253a731245cef66f9b47f5bbaa5ebb4a93ffe11",
+      "bytes": 4996
     },
     {
       "path": "RIGHTS.md",
@@ -408,8 +488,8 @@
     },
     {
       "path": "scripts/test_static_site.py",
-      "sha256": "4b3fd833e9c291302fe5709248d28f5e662412b2f3caa16fbd80d3525566473c",
-      "bytes": 5397
+      "sha256": "550825cfc95327f04ecc096c6ae983d18e71f881e26831ad90b653df8585dd68",
+      "bytes": 6061
     },
     {
       "path": "scripts/test_trade_replay.py",
@@ -423,13 +503,13 @@
     },
     {
       "path": "src/css/site.css",
-      "sha256": "91856508ea371ae56bb642df53f5f79d09552799aa18490f5717708b76b06f65",
-      "bytes": 31172
+      "sha256": "9f3d85295465c1b0820b85e9175dabd1361491000cfd4611e8a17c858fd22e7c",
+      "bytes": 31017
     },
     {
       "path": "src/index.html",
-      "sha256": "3ed10b3d8d4dc51bcfa908c325425f648cf5a820afe39d0ba0399f1d2c290497",
-      "bytes": 42634
+      "sha256": "cb9cd770ed6935b9a3f454384b98a2b30c51c77c98336d5e0d0a7d4dc1ccb31d",
+      "bytes": 44913
     },
     {
       "path": "src/js/app.js",
