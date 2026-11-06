@@ -68,18 +68,18 @@ if (root) {
 
   function markers() {
     const result = [];
-    const add = (ix, position, shape, color) => { if (ix <= current) result.push({ time: data.candles[ix].t * 60, position, shape, color, size: 1.5 }); };
-    add(data.indices.entry1, "belowBar", "arrowUp", "#59d7f1");
-    add(data.indices.pullback, "aboveBar", "circle", "#f1c66b");
-    add(data.indices.entry2, "aboveBar", "arrowUp", "#a992ff");
-    if (outcome && current >= outcome.exitIndex) add(outcome.exitIndex, "aboveBar", "arrowDown", "#ff8d98");
+    const add = (ix, position, shape, color, text) => { if (ix <= current) result.push({ time: data.candles[ix].t * 60, position, shape, color, text, size: 1.3 }); };
+    add(data.indices.entry1, "belowBar", "arrowUp", "#1687a7", "E1");
+    add(data.indices.pullback, "aboveBar", "circle", "#98721b", "PB");
+    add(data.indices.entry2, "belowBar", "arrowUp", "#6551a6", "E2");
+    if (outcome && current >= outcome.exitIndex) add(outcome.exitIndex, "aboveBar", "arrowDown", "#a34350", "X");
     return result;
   }
 
   function setLines(state) {
     priceLines.forEach((line) => series.removePriceLine(line)); priceLines = [];
-    state.legs.forEach((leg, i) => priceLines.push(series.createPriceLine({ price: leg.entryPrice, color: i ? "#a992ff" : "#59d7f1", lineWidth: 1, lineStyle: 2, axisLabelVisible: true, title: i ? "Entry 2" : "Entry 1" })));
-    if (state.quantity === 2) priceLines.push(series.createPriceLine({ price: state.averageEntryPrice, color: "#e7edf3", lineWidth: 1, lineStyle: 1, axisLabelVisible: true, title: "Weighted average" }));
+    state.legs.forEach((leg, i) => priceLines.push(series.createPriceLine({ price: leg.entryPrice, color: i ? "#a992ff" : "#59d7f1", lineWidth: 1, lineStyle: 2, axisLabelVisible: false, title: "" })));
+    if (state.quantity === 2) priceLines.push(series.createPriceLine({ price: state.averageEntryPrice, color: "#e7edf3", lineWidth: 1, lineStyle: 1, axisLabelVisible: false, title: "" }));
   }
 
   function stage() {
@@ -97,9 +97,9 @@ if (root) {
     const pill = byId("replay-position-state"); pill.textContent = closed ? "CLOSED" : s.quantity ? "OPEN" : "FLAT"; pill.classList.toggle("is-open", !closed && s.quantity > 0);
     text("replay-position", `${s.quantity} contract${s.quantity === 1 ? "" : "s"}`);
     const mark = byId("replay-mark"); mark.classList.toggle("is-positive", s.openGrossBRL > 0 || (closed && s.realizedNetBRL > 0));
-    text("replay-mark-title", closed ? "Realized gross P&L" : "Open gross P&L");
+    text("replay-mark-title", closed ? "Realized model gross" : "Open gross model mark");
     mark.textContent = closed ? `${fmtMoney(s.realizedGrossBRL)} realized` : s.quantity ? fmtMoney(s.openGrossBRL) : "—";
-    text("replay-mark-label", closed ? "Final realized gross is held constant after the modeled exit." : s.quantity ? "Open gross mark at the latest visible completed M5 close; before costs." : "No position is open. Replay begins with the full pre-entry session context.");
+    text("replay-mark-label", closed ? "Adjusted-price model gross remains fixed after the simulated exit; not exchange-executable P&L." : s.quantity ? "Open gross model mark at the latest visible completed M5 close; before modeled costs." : "No position is open. Replay begins with the full pre-entry session context.");
     text("replay-average", s.averageEntryPrice === null ? "—" : number.format(s.averageEntryPrice));
     const e1 = data.events.find((e) => e.type === "entry" && e.index === data.indices.entry1), e2 = data.events.find((e) => e.type === "entry" && e.index === data.indices.entry2);
     text("replay-entry1-price", current >= data.indices.entry1 ? number.format(e1.price) : "—");
@@ -116,7 +116,7 @@ if (root) {
     text("replay-chart-state", `Showing ${current + 1} of ${data.candles.length} verified M5 candles`); slider.value = String(current);
     host.setAttribute("aria-label", `Interactive WIN M5 historical chart through session ${elapsed(candle.t)}. ${current + 1} of ${data.candles.length} candles are visible; later candles are withheld. Current candle OHLC: open ${number.format(candle.o)}, high ${number.format(candle.h)}, low ${number.format(candle.l)}, close ${number.format(candle.c)}.`);
     byId("trade-replay").querySelector('[data-replay-action="fit-session"]').disabled = current !== data.candles.length - 1;
-    status.textContent = closed ? `${current >= data.indices.postExitCheckpoint ? "Post-exit context" : "Position closed"}. Flat. Realized net ${fmtMoney(outcome.netBRL)} under the S2 research cost scenario. Candle ${current + 1} of ${data.candles.length}.` : s.quantity ? `Position open: ${s.quantity} WIN contract${s.quantity === 1 ? "" : "s"}. Current gross mark ${fmtMoney(s.openGrossBRL)}. Candle ${current + 1} of ${data.candles.length}.` : `Flat. No position is open. Candle ${current + 1} of ${data.candles.length}.`;
+    status.textContent = closed ? `${current >= data.indices.postExitCheckpoint ? "Post-exit context" : "Position closed"}. Flat. Adjusted-price model net ${fmtMoney(outcome.netBRL)} under the S2 research scenario; not exchange-executable P&L. Candle ${current + 1} of ${data.candles.length}.` : s.quantity ? `Position open: ${s.quantity} WIN contract${s.quantity === 1 ? "" : "s"}. Current adjusted-price model gross mark ${fmtMoney(s.openGrossBRL)}. Candle ${current + 1} of ${data.candles.length}.` : `Flat. No position is open. Candle ${current + 1} of ${data.candles.length}.`;
   }
 
   function render() {

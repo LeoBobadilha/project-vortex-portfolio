@@ -34,6 +34,16 @@ if entries[0]["index"] >= indices["pullback"] or indices["pullback"] >= entries[
     ERRORS.append("A genuine intervening pullback must precede the separately recorded add-on")
 if outcome["exitQuantity"] != 2 or outcome["exitIndex"] != indices["exit"]:
     ERRORS.append("The exit must close the complete two-contract position at the audited event")
+if data.get("tickSizePoints") != 5 or data.get("exchangeExecutablePricesVerified") is not False:
+    ERRORS.append("WIN tick size and non-executable adjusted-price classification must be explicit")
+if outcome.get("resultBasis") != "unrounded arithmetic from adjusted-price research-model fills; not exchange-executable P&L":
+    ERRORS.append("BRL result must be identified as adjusted-price model arithmetic, not executable P&L")
+if outcome.get("tickGridAssessment", {}).get("exchangeExecutablePricesVerified") is not False:
+    ERRORS.append("Replay must not claim the modeled fills are exchange-verified")
+if [entry["price"] % data["tickSizePoints"] for entry in entries] != [0, 3]:
+    ERRORS.append("Public translated entry prices must preserve the audited grid residuals without snapping")
+if outcome["exitPrice"] % data["tickSizePoints"] != 2:
+    ERRORS.append("Public translated exit price must preserve its audited off-grid residual")
 for i, candle in enumerate(candles):
     if not (candle["l"] <= min(candle["o"], candle["c"]) <= max(candle["o"], candle["c"]) <= candle["h"]):
         ERRORS.append(f"Invalid OHLC geometry at candle {i}")
@@ -65,11 +75,13 @@ else:
     if outcome["averageEntryPrice"] != sum(leg["entryPrice"] for leg in outcome["legs"]) / 2:
         ERRORS.append("Weighted average entry price is incorrect")
 if (outcome["grossPoints"], outcome["grossBRL"], outcome["costBRL"], outcome["netBRL"]) != (3751, 750.2, 12.0, 738.2):
-    ERRORS.append("Combined verified result must reconcile to 3,751 points / R$750.20 gross / R$12 S2 / R$738.20 net")
+    ERRORS.append("Adjusted-price model arithmetic must reconcile to 3,751 points / R$750.20 gross / R$12 S2 / R$738.20 net")
 cost_model = outcome["costModel"]
 expected_cost = outcome["exitQuantity"] * (cost_model["roundTripBrokerageBRLPerContract"] + cost_model["adverseRoundTripPointsPerContract"] * cost_model["brlPerPointPerContract"])
 if expected_cost != outcome["costBRL"] or outcome["costScenario"] != "S2 research stress scenario":
     ERRORS.append("S2 costs must be applied once per contract and must not be labelled C30")
+if "off WIN's 5-point tick grid" not in HTML_PATH.read_text(encoding="utf-8"):
+    ERRORS.append("The non-executable tick-grid limitation must be prominent in the replay UI")
 if any(key in data for key in ("grossBRL", "netBRL", "exitPrice", "sourceDate", "sourceTimestamps")):
     ERRORS.append("Final outcome data must remain separate from the initial candle payload")
 combined = json.dumps(data) + json.dumps(outcome)

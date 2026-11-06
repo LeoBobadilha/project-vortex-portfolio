@@ -192,6 +192,10 @@
     </div>
     <div class="replay-badges" aria-label="Case characteristics"><span>WIN · MINI INDEX</span><span>LONG</span><span>5-MINUTE BARS</span><span>1 + 1 CONTRACTS</span><span>HISTORICAL SIMULATION</span></div>
   </div>
+  <aside class="replay-execution-basis" role="note" aria-label="Important price and result qualification">
+    <strong>Adjusted-price model, not exchange executions</strong>
+    <span>The source is continuous-adjusted PRICE_ONLY data. Entry 2 and the exit are off WIN's 5-point tick grid. The BRL values below are unrounded research-model arithmetic, not executable B3 fills or account P&amp;L; no prices have been snapped to the grid.</span>
+  </aside>
   <div class="replay-layout">
     <div class="replay-main">
       <div class="replay-chart-wrap">
@@ -238,7 +242,7 @@
         <strong class="replay-position-qty" id="replay-position">0 contracts</strong>
         <p id="replay-mark-label">No position is open. Replay begins with the full pre-entry session context.</p>
         <div class="replay-kpi-grid">
-          <div><span id="replay-mark-title">Open gross P&amp;L</span><strong id="replay-mark">—</strong></div>
+          <div><span id="replay-mark-title">Open gross model mark</span><strong id="replay-mark">—</strong></div>
           <div><span>Weighted average</span><strong id="replay-average">—</strong></div>
           <div><span>Entry 1 · 1 contract</span><strong id="replay-entry1-price">—</strong></div>
           <div><span>Entry 2 · add 1</span><strong id="replay-entry2-price">—</strong></div>
@@ -250,14 +254,14 @@
         <p id="replay-stage-copy">All 31 available M5 bars before the first entry are shown. Use pan, zoom, or the timeline to review the developing structure.</p>
       </div>
       <div class="replay-outcome" id="replay-outcome" hidden>
-        <span class="replay-card-label">CLOSED POSITION · S2 COST SCENARIO</span>
-        <h4>Recorded research result</h4>
+        <span class="replay-card-label">MODELED OUTCOME · S2 RESEARCH SCENARIO</span>
+        <h4>Adjusted-price model output</h4>
         <dl>
-          <div><dt>Leg 1 · gross</dt><dd id="replay-leg1-gross">—</dd></div>
-          <div><dt>Leg 2 · gross</dt><dd id="replay-leg2-gross">—</dd></div>
-          <div><dt>Combined gross</dt><dd id="replay-final-gross">—</dd></div>
-          <div><dt>S2 costs · 2 legs</dt><dd id="replay-final-cost">—</dd></div>
-          <div class="replay-net-row"><dt>Combined net</dt><dd id="replay-final-net">—</dd></div>
+          <div><dt>Leg 1 · modeled gross</dt><dd id="replay-leg1-gross">—</dd></div>
+          <div><dt>Leg 2 · modeled gross</dt><dd id="replay-leg2-gross">—</dd></div>
+          <div><dt>Combined modeled gross</dt><dd id="replay-final-gross">—</dd></div>
+          <div><dt>Modeled S2 costs · 2 legs</dt><dd id="replay-final-cost">—</dd></div>
+          <div class="replay-net-row"><dt>Modeled net after S2</dt><dd id="replay-final-net">—</dd></div>
           <div><dt>Position after exit</dt><dd>Flat · 0 contracts</dd></div>
         </dl>
         <p class="replay-postexit-note" id="replay-postexit-note">The position is closed. Playback continues through the later market bars.</p>
@@ -269,7 +273,8 @@
     <div class="replay-method-copy">
       <p>This is a separate exploratory historical backtest case, not a trade from the PSC portfolio benchmark, Paper Live, or a live account. The frozen event ledger records two distinct one-contract simulated legs. A confirmed pullback touch precedes the add-on; the replay uses the full available 107-bar session, including 39 candles after the modeled exit.</p>
       <p>The underlying source is continuous adjusted PRICE_ONLY M5 OHLC. The source timezone is unauthenticated, and the bars do not certify bid/ask quotes, executable fills, or intrabar sequencing. Fill events are revealed after their associated five-minute candle is complete to avoid showing that candle's high, low, or close before it would be available. The price axis is translated and the time axis is relative to session open; candle geometry remains recognizable and may be correlated with public market data.</p>
-      <p>The displayed S2 research stress scenario deducts R$6 per contract: R$2 round-trip brokerage plus 20 adverse round-trip points at R$0.20 per point. Other fees are excluded by the source study. This is not the portfolio's C30 cost model.</p>
+      <p>The source study sets WIN's minimum tick to five index points, but this case's recorded research-model prices are not all on that grid. Entry 1 is grid-aligned; Entry 2 and the modeled exit are not. The translated public values preserve those grid residuals. The 20-cent remainder arises from exact model arithmetic: 2,027 + 1,724 = 3,751 points, and 3,751 × R$0.20 = R$750.20. It is not a currency-rounding issue. Because the price source is adjusted continuous OHLC and lacks certified contract quotes, the result is an adjusted-price model output, not tick-valid B3 performance. No fills have been rounded or snapped; that would require rerunning the strategy against a verified unadjusted contract series.</p>
+      <p>The S2 research stress scenario deducts R$6 per modeled contract: R$2 round-trip brokerage plus two adverse ticks per side (20 points total) at R$0.20 per point. Other fees are excluded by the source study. This cost assumption does not make the off-grid model fills executable, and S2 is not the portfolio's C30 cost model.</p>
     </div>
   </details>
   <p class="replay-disclosure">Selected historical backtest example. This operation is not representative of all trades. Past performance, including historical backtests and simulated trading results, does not guarantee future results. Live trading involves risk, and actual execution may differ materially from simulated outcomes.</p>

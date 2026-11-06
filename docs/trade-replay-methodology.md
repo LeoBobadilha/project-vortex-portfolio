@@ -10,9 +10,11 @@ The five-minute OHLC record cannot establish intrabar sequencing. Each simulated
 
 ## Result and costs
 
-The first leg records 2,027 favorable points and R$405.40 gross. The second records 1,724 points and R$344.80 gross. At R$0.20 per point per contract, the two-leg result totals 3,751 contract-points and R$750.20 gross. The weighted average entry is the arithmetic mean of the two one-contract fills.
+These are model values, not executable trade results. The H36 run configuration specifies a five-point minimum tick for WIN, but the selected adjusted-price model fills are not all grid-aligned. Entry 1 is aligned; Entry 2 is three points off-grid and the modeled exit is two points off-grid. The public price translation is a multiple of five, so it preserves these residuals. No fills were rounded or snapped.
 
-The display applies the research study's S2 stress scenario once per contract: R$2 round-trip brokerage plus 20 adverse round-trip points at R$0.20 per point, or R$6 per leg. Total S2 costs are R$12 and the resulting net is R$738.20. Other fees are excluded in the source study. S2 is not the PSC portfolio's C30 scenario and these results must not be merged with PSC metrics.
+The source ledger's exact arithmetic is 2,027 + 1,724 = 3,751 modeled points, and 3,751 × R$0.20 = R$750.20 modeled gross. That explains the 20-cent remainder; it is not a currency-rounding defect. The study's S2 stress assumption applies R$6 per modeled contract: R$2 round-trip brokerage plus two adverse ticks per side (20 points total at R$0.20), or R$12 for two contracts. The resulting R$738.20 is net under that research assumption, not a tick-valid or exchange-executable result. Other fees are excluded. S2 is not the PSC portfolio's C30 scenario and these figures must not be merged with PSC metrics.
+
+An execution-realistic recalculation is not defensible from the available source: it is continuous-adjusted PRICE_ONLY OHLC from a demo `WIN$` series, with no certified individual-contract quotations, bid/ask or fills. The related broker-wall timestamp view is derived from the same feed and marks price adjustment as unverified. Snapping the event prices would change the model outcome without rerunning and validating the strategy on a verified unadjusted contract series. No better evidenced 1+1 WIN example is available in the inspected H36 artifacts; the replay is retained only as an explicitly qualified view of the research model.
 
 ## Public data and reproducibility
 
@@ -22,6 +24,6 @@ The sanitized files are `public/data/replay/pyramiding-win-session.json` and `pu
 
 ## Source limitations
 
-The underlying series is continuous adjusted PRICE_ONLY OHLC. It does not certify bid/ask quotes, exchange-executable fills, contract rollover behavior, or exact intrabar path. The source clock's timezone is unauthenticated; the public chart therefore uses session-relative time. The source study states that the tested period had prior research exposure and is not an untouched holdout. This selected winning example is illustrative, not representative or evidence of future profitability.
+The underlying series is continuous adjusted PRICE_ONLY OHLC. It does not certify tick-valid bid/ask quotes, exchange-executable fills, contract rollover behavior, or exact intrabar path. The source clock's timezone is unauthenticated; the public chart therefore uses session-relative time. The source study states that the tested period had prior research exposure and is not an untouched holdout. This selected winning example is illustrative, not representative or evidence of future profitability.
 
 > Selected historical backtest example. This operation is not representative of all trades. Past performance, including historical backtests and simulated trading results, does not guarantee future results. Live trading involves risk, and actual execution may differ materially from simulated outcomes.

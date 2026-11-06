@@ -29,6 +29,7 @@ export function validateReplay(data, outcome) {
   const errors = [];
   const { candles, events, indices } = data;
   if (!Array.isArray(candles) || candles.length !== 107) errors.push("Expected all 107 session candles");
+  if (data.tickSizePoints !== 5 || data.exchangeExecutablePricesVerified !== false) errors.push("WIN tick size and adjusted-price non-executable status must be explicit");
   if (indices.entry1 !== 31 || indices.pullback !== 33 || indices.entry2 !== 34 || indices.exit !== 67) errors.push("Event indexes do not match the verified session sequence");
   if (candles?.length - 1 - indices.exit < 5) errors.push("Fewer than five real post-exit bars are available");
   if (!events.some((event) => event.type === "entry" && event.index === indices.entry1 && event.quantity === 1)) errors.push("First one-contract entry is missing");
@@ -46,6 +47,9 @@ export function validateReplay(data, outcome) {
     return errors;
   }
   const exitPrice = outcome.exitPrice;
+  if (outcome.resultBasis !== "unrounded arithmetic from adjusted-price research-model fills; not exchange-executable P&L") errors.push("BRL outcomes must be classified as non-executable adjusted-price model outputs");
+  if (outcome.tickGridAssessment?.exchangeExecutablePricesVerified !== false) errors.push("Tick-grid assessment must not claim exchange-verified prices");
+  if (entryEvents[0].price % data.tickSizePoints !== 0 || entryEvents[1].price % data.tickSizePoints !== 3 || exitPrice % data.tickSizePoints !== 2) errors.push("Off-grid fill residuals must be retained without snapping");
   const legPoints = outcome.legs.map((leg) => exitPrice - leg.entryPrice);
   if (entryEvents.length !== 2 || entryEvents[0].quantity !== 1 || entryEvents[1].quantity !== 1) errors.push("Position must be built by two independent one-contract entries");
   if (entryEvents[0].index >= indices.pullback || indices.pullback >= entryEvents[1].index) errors.push("Pullback must occur between the two fills");

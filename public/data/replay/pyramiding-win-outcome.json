@@ -2,6 +2,15 @@
   "exitIndex": 67,
   "exitPrice": 102027,
   "exitQuantity": 2,
+  "resultBasis": "unrounded arithmetic from adjusted-price research-model fills; not exchange-executable P&L",
+  "tickGridAssessment": {
+    "tickSizePoints": 5,
+    "entry1OnGrid": true,
+    "entry2OnGrid": false,
+    "exitOnGrid": false,
+    "exchangeExecutablePricesVerified": false,
+    "explanation": "The research dataset is continuous-adjusted PRICE_ONLY OHLC, not certified B3 quotations. Fill prices were not rounded or snapped."
+  },
   "costScenario": "S2 research stress scenario",
   "costModel": {
     "roundTripBrokerageBRLPerContract": 2.0,
@@ -33,7 +42,7 @@
   "grossBRL": 750.2,
   "costBRL": 12.0,
   "netBRL": 738.2,
-  "netMethod": "Gross less S2 stress cost once per each of two contract legs; not C30.",
+  "netMethod": "Adjusted-price model gross less S2 stress cost once per each of two model legs; not C30 or exchange-executable P&L.",
   "researchDisclosure": "Selected example from a separate exploratory historical backtest; not a PSC portfolio record, Paper Live result, or live trade.",
   "exitResolution": "The frozen OHLC replay records one shared model exit for both legs; M5 intrabar sequencing is not certified."
 }

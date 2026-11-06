@@ -28,6 +28,10 @@ const postExit = positionStateAt(data, data.indices.postExitCheckpoint, outcome)
 assert.equal(closed.quantity, 0);
 assert.equal(closed.realizedGrossBRL, 750.2);
 assert.equal(closed.realizedNetBRL, 738.2);
+assert.equal(outcome.tickGridAssessment.exchangeExecutablePricesVerified, false);
+assert.equal(outcome.grossBRL * 5 % 1, 0);
+assert.notEqual(outcome.grossPoints % data.tickSizePoints, 0,
+  "The fractional-real result is retained as exact adjusted-price model arithmetic, not snapped to an exchange tick grid");
 assert.deepEqual(postExit, closed);
 assert.equal(positionStateAt(data, data.indices.entry2, outcome).quantity, 2,
   "Seeking backward must restore the historical open two-leg position");
