@@ -58,8 +58,8 @@
     },
     {
       "path": "dist/data/replay/pyramiding-win-session.json",
-      "sha256": "1035334594c042aa6c710c560df8729a5d1fce28edfaaefefbd6330a3880a6b0",
-      "bytes": 7271
+      "sha256": "6fb67f4daa07f5761197f619086d2133b89b36d99124af3f9f52f9415aaf1917",
+      "bytes": 7474
     },
     {
       "path": "dist/images/architecture.png",
@@ -153,8 +153,8 @@
     },
     {
       "path": "dist/index.html",
-      "sha256": "0c7b46bc02aba3f1c62a93a7a124030224bcdfa4959a5b1547192434dbb4fc93",
-      "bytes": 42550
+      "sha256": "3ed10b3d8d4dc51bcfa908c325425f648cf5a820afe39d0ba0399f1d2c290497",
+      "bytes": 42634
     },
     {
       "path": "dist/js/app.js",
@@ -163,13 +163,13 @@
     },
     {
       "path": "dist/js/replay-model.mjs",
-      "sha256": "03b3ffd60b1d6530bb1171df3a1c6c6a0f9fccd9245fcd2175b5b9e5168df144",
-      "bytes": 6281
+      "sha256": "3e60259b1b0d9048c22d58e265bbe11242f4034e06160b3b612fae46e974ee12",
+      "bytes": 6536
     },
     {
       "path": "dist/js/trade-replay.js",
-      "sha256": "99e12273f0c055ba7cdfdfa6b8d08abe2df61a4190732285a01666f0441f4b6b",
-      "bytes": 15013
+      "sha256": "80c9644a0e85f0be1e850016fc538cd41001f9a7869227be869c5e9569b5217f",
+      "bytes": 15268
     },
     {
       "path": "dist/vendor/LIGHTWEIGHT-CHARTS-LICENSE.txt",
@@ -248,8 +248,8 @@
     },
     {
       "path": "docs/trade-replay-methodology.md",
-      "sha256": "2e86d0e7773247d36605e61b43eaba623449dec68b37519c048bb2ed845d7014",
-      "bytes": 5225
+      "sha256": "77ab492066c55476c20ef9036ef5f3917b761d88da390d163f6c1bf78b1851b0",
+      "bytes": 5326
     },
     {
       "path": "package.json",
@@ -278,8 +278,8 @@
     },
     {
       "path": "public/data/replay/pyramiding-win-session.json",
-      "sha256": "1035334594c042aa6c710c560df8729a5d1fce28edfaaefefbd6330a3880a6b0",
-      "bytes": 7271
+      "sha256": "6fb67f4daa07f5761197f619086d2133b89b36d99124af3f9f52f9415aaf1917",
+      "bytes": 7474
     },
     {
       "path": "public/images/architecture.png",
@@ -393,8 +393,8 @@
     },
     {
       "path": "scripts/audit_public_site.py",
-      "sha256": "1912c677e750fba42d8f843428e66faa4eea514d44d22c413a627721d6f6e8b9",
-      "bytes": 3670
+      "sha256": "7b9e65340e9f07e1cbe4cca2bb32bf67623bdef2fece2a07def2970e4779b2a0",
+      "bytes": 4095
     },
     {
       "path": "scripts/build.mjs",
@@ -413,8 +413,8 @@
     },
     {
       "path": "scripts/test_trade_replay.py",
-      "sha256": "4e2b81549305a93e2e9c84ae58e9cee3e4d7dd21b9d660d4b89e660b36c384f7",
-      "bytes": 8522
+      "sha256": "f33594082a29b5d1b1f7df5168c2696ecb3a4983e8a8b941e91e5ff841e49258",
+      "bytes": 9531
     },
     {
       "path": "src/css/replay.css",
@@ -428,8 +428,8 @@
     },
     {
       "path": "src/index.html",
-      "sha256": "0c7b46bc02aba3f1c62a93a7a124030224bcdfa4959a5b1547192434dbb4fc93",
-      "bytes": 42550
+      "sha256": "3ed10b3d8d4dc51bcfa908c325425f648cf5a820afe39d0ba0399f1d2c290497",
+      "bytes": 42634
     },
     {
       "path": "src/js/app.js",
@@ -438,13 +438,13 @@
     },
     {
       "path": "src/js/replay-model.mjs",
-      "sha256": "03b3ffd60b1d6530bb1171df3a1c6c6a0f9fccd9245fcd2175b5b9e5168df144",
-      "bytes": 6281
+      "sha256": "3e60259b1b0d9048c22d58e265bbe11242f4034e06160b3b612fae46e974ee12",
+      "bytes": 6536
     },
     {
       "path": "src/js/trade-replay.js",
-      "sha256": "99e12273f0c055ba7cdfdfa6b8d08abe2df61a4190732285a01666f0441f4b6b",
-      "bytes": 15013
+      "sha256": "80c9644a0e85f0be1e850016fc538cd41001f9a7869227be869c5e9569b5217f",
+      "bytes": 15268
     }
   ]
 }
